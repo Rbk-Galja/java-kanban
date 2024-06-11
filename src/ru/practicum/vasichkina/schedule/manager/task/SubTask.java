@@ -1,8 +1,8 @@
-package ru.practicum.task_trecker.task;
+package ru.practicum.vasichkina.schedule.manager.task;
 
 public class SubTask extends Task {
 
-    private final Integer epicId;
+    private Integer epicId;
 
     public SubTask(Integer id, String name, String description, TasksStatus status, Integer epicId) {
         super(id, name, description, status);
@@ -16,6 +16,10 @@ public class SubTask extends Task {
 
     public Integer getEpicId() {
         return epicId;
+    }
+
+    public void setEpicId(Integer epicId) {
+        this.epicId = epicId;
     }
 
     @Override

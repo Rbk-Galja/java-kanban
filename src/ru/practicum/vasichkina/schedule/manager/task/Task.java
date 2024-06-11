@@ -1,12 +1,12 @@
-package ru.practicum.task_trecker.task;
+package ru.practicum.vasichkina.schedule.manager.task;
 
 import java.util.Objects;
 
 public class Task {
 
     private Integer id;
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
     private TasksStatus status;
 
     public Task(Integer id, String name, String description, TasksStatus status) {
@@ -46,12 +46,20 @@ public class Task {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public TasksStatus getStatus() {
-return status;
+        return status;
     }
 
     public void setStatus(TasksStatus status) {

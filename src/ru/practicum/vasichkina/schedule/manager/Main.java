@@ -1,10 +1,10 @@
-package ru.practicum.task_trecker;
+package ru.practicum.vasichkina.schedule.manager;
 
-import ru.practicum.task_trecker.manager.TaskManager;
-import ru.practicum.task_trecker.task.Epic;
-import ru.practicum.task_trecker.task.SubTask;
-import ru.practicum.task_trecker.task.Task;
-import ru.practicum.task_trecker.task.TasksStatus;
+import ru.practicum.vasichkina.schedule.manager.manager.TaskManager;
+import ru.practicum.vasichkina.schedule.manager.task.Epic;
+import ru.practicum.vasichkina.schedule.manager.task.SubTask;
+import ru.practicum.vasichkina.schedule.manager.task.Task;
+import ru.practicum.vasichkina.schedule.manager.task.TasksStatus;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,7 @@ public class Main {
 
         System.out.println("Тест 5: выводим список всех тасок: ");
         System.out.println("В нашем списке такие таски: ");
-        taskManager.getAllTasks();
+        System.out.println(taskManager.getTasks());
         System.out.println();
 
         System.out.println("Тест 6: обновляем таску");
@@ -61,12 +61,10 @@ public class Main {
         System.out.println("Тест 7: удаляем таску");
         boolean deleteTask = taskManager.deleteTask(task2Created.getId());
         System.out.println("Таска удалена: " + deleteTask);
-        System.out.println("Список тасок теперь такой: ");
-        taskManager.getAllTasks();
         System.out.println();
 
         System.out.println("Тест 8: удаляем все таски");
-        taskManager.deleteTasks();
+        taskManager.deleteAllTasks();
         System.out.println("Таски должны быть пустые: " + tasks.isEmpty());
         System.out.println();
 
@@ -80,7 +78,7 @@ public class Main {
         Epic epic1Created = taskManager.creatEpic(epic1);
         System.out.println("Созданный эпик должен содержать id: " + (epic1Created.getId() != null));
         System.out.println("Список эпиков должен содержать наш эпик:");
-        taskManager.getAllEpics();
+        System.out.println(taskManager.getEpic());
         System.out.println();
 
         System.out.println("Тест 11: список подзадач пуст");
@@ -111,7 +109,7 @@ public class Main {
         Epic epic2Created = taskManager.creatEpic(epic2);
         System.out.println("Созданный эпик должен содержать id: " + (epic2Created.getId() != null));
         System.out.println("Список эпиков должен содержать наш эпик:");
-        taskManager.getAllEpics();
+        System.out.println(taskManager.getEpic());
         System.out.println();
 
         System.out.println("Тест 15: создаём первую подзадачу для второго эпика");
@@ -126,29 +124,32 @@ public class Main {
         System.out.println("Тест 16: обновление подзадачи");
         SubTask subTask4 = new SubTask(subTask1Created.getId(), "Выполнение",
                 "Набросать схему классов и методов", TasksStatus.IN_PROGRESS, subTask1Created.getEpicId());
-        SubTask subTask4Updated = taskManager.updateSubtasks(subTask1Created, subTask4);
-        System.out.println("Обновленная подзадача должна иметь обновленные поля: " + subTask4Updated);
+        taskManager.updateSubTasks(subTask4);
+        System.out.println("Обновленная подзадача должна иметь обновленные поля: " + subTask4);
+        System.out.println("Статус эпика должен обновиться: " + taskManager.getEpicById(subTask4.getEpicId()));
         System.out.println();
 
         System.out.println("Тест 17: обновление эпика");
         Epic epic3 = new Epic(epic1Created.getId(), "Учеба", "Выполнить ДЗ 4 спринта");
-        Epic epic3Updated = taskManager.updateEpic(epic3);
-        System.out.println("Обновленный эпик должен иметь обновленные поля: " + epic3Updated);
+        taskManager.updateEpic(epic3);
+        System.out.println("Обновленный эпик должен иметь обновленные поля: " + taskManager.getEpicById(epic3.getId()));
         System.out.println();
 
         System.out.println("Тест 18: удаление эпика");
-        boolean deleteEpicResult = taskManager.deleteEpic(epic2Created);
+        boolean deleteEpicResult = taskManager.deleteEpic(epic2Created.getId()) != null;
         System.out.println("Удаление должно пройти успешно: " + deleteEpicResult);
         System.out.println("В списке эпиков теперь такие эпики:");
-        taskManager.getAllEpics();
+        System.out.println(taskManager.getEpic());
         System.out.println();
 
         System.out.println("Тест 19: удаление подзадачи");
-        boolean deleteSubTaskResult = taskManager.deleteSubTasks(subTask2Created);
+        boolean deleteSubTaskResult = taskManager.deleteSubTasks(subTask4.getId()) != null;
         System.out.println("Удаление должно пройти успешно: " + deleteSubTaskResult);
-        System.out.println("Обновленный эпик должен иметь обновленный статус: " + epic3Updated);
+        System.out.println("Обновленный эпик должен иметь обновленный статус: " + taskManager.getEpic());
         System.out.println("Список подзадач теперь содержит:");
-        taskManager.getAllSubTask();
+        System.out.println(taskManager.getSubTaskFromEpic(epic3.getId()));
+        System.out.println();
+
     }
 }
 

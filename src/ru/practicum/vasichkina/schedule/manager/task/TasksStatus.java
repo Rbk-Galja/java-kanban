@@ -1,4 +1,4 @@
-package ru.practicum.task_trecker.task;
+package ru.practicum.vasichkina.schedule.manager.task;
 
 public enum TasksStatus {
     NEW,

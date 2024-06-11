@@ -1,10 +1,10 @@
-package ru.practicum.task_trecker.task;
+package ru.practicum.vasichkina.schedule.manager.task;
 
 import java.util.ArrayList;
 
 public class Epic extends Task {
 
-    private ArrayList<SubTask> addToEpic = new ArrayList<>();
+    private ArrayList<Integer> addToEpic = new ArrayList<>();
 
 
     public Epic(String name, String description) {
@@ -15,11 +15,11 @@ public class Epic extends Task {
         super(id, name, description);
     }
 
-    public ArrayList<SubTask> getAddToEpic() {
+    public ArrayList<Integer> getAddToEpic() {
         return addToEpic;
     }
 
-    public void setAddToEpic(ArrayList<SubTask> addToEpic) {
+    public void setAddToEpic(ArrayList<Integer> addToEpic) {
         this.addToEpic = addToEpic;
     }
 
