@@ -1,10 +1,11 @@
 package ru.practicum.vasichkina.schedule.manager.task;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Epic extends Task {
 
-    private ArrayList<Integer> addToEpic = new ArrayList<>();
+    private ArrayList<Integer> subTaskId = new ArrayList<>();
 
 
     public Epic(String name, String description) {
@@ -15,12 +16,12 @@ public class Epic extends Task {
         super(id, name, description);
     }
 
-    public ArrayList<Integer> getAddToEpic() {
-        return addToEpic;
+    public ArrayList<Integer> getSubTaskId() {
+        return subTaskId;
     }
 
-    public void setAddToEpic(ArrayList<Integer> addToEpic) {
-        this.addToEpic = addToEpic;
+    public void setSubTaskId(ArrayList<Integer> addToEpic) {
+        this.subTaskId = addToEpic;
     }
 
 
@@ -32,5 +33,18 @@ public class Epic extends Task {
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Epic epic)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(subTaskId, epic.subTaskId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), subTaskId);
     }
 }
