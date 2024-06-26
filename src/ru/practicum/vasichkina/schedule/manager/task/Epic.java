@@ -1,6 +1,7 @@
 package ru.practicum.vasichkina.schedule.manager.task;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {

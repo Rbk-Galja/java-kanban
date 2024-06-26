@@ -11,11 +11,11 @@ public interface TaskManager {
 
     //получение всех задач, подзадач и эпиков
 
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<SubTask> getSubTasks();
+    List<SubTask> getSubTasks();
 
-    ArrayList<Epic> getEpic();
+    List<Epic> getEpic();
 
     //получение задач/подзадач/эпиков по id
     Task getTaskById(Integer taskId);

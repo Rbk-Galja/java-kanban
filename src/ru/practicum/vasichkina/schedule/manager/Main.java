@@ -7,7 +7,7 @@ import ru.practicum.vasichkina.schedule.manager.task.SubTask;
 import ru.practicum.vasichkina.schedule.manager.task.Task;
 import ru.practicum.vasichkina.schedule.manager.task.TasksStatus;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -19,7 +19,7 @@ public class Main {
         TaskManager inMemoryTaskManager = Manager.getDefault();
 
         System.out.println("Тест 1: пустые таски");
-        ArrayList<Task> tasks = inMemoryTaskManager.getTasks();
+        List<Task> tasks = inMemoryTaskManager.getTasks();
         System.out.println("Таски должны быть пустые: " + tasks.isEmpty());
         System.out.println();
 
@@ -74,7 +74,7 @@ public class Main {
         System.out.println();
 
         System.out.println("Тест 8: пустые эпики");
-        ArrayList<Epic> epics = inMemoryTaskManager.getEpic();
+        List<Epic> epics = inMemoryTaskManager.getEpic();
         System.out.println("Эпики пустые: " + epics.isEmpty());
         System.out.println();
 
@@ -87,7 +87,7 @@ public class Main {
         System.out.println();
 
         System.out.println("Тест 10: список подзадач пуст");
-        ArrayList<SubTask> subTasks = inMemoryTaskManager.getSubTasks();
+        List<SubTask> subTasks = inMemoryTaskManager.getSubTasks();
         System.out.println("Подзадачи пустые: " + subTasks.isEmpty());
         System.out.println();
 
@@ -196,6 +196,7 @@ public class Main {
         System.out.println("В списке нет нашей подзадачи");
         System.out.println(inMemoryTaskManager.getSubTaskFromEpic(epic3.getId()));
         System.out.println();
+
 
     }
 }
