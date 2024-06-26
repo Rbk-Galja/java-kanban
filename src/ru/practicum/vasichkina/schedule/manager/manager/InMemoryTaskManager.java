@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
+    // отдельное спасибо за все замечания, благодаря им проработала темы еще раз и некоторые моменты стали понятнее!
+
     private int nextId;
     private final HistoryManager historyManager = Manager.getDefaultHistory();
 

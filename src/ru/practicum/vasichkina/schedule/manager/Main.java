@@ -176,19 +176,7 @@ public class Main {
         }
         System.out.println();
 
-        System.out.println("Тест 21: проверяем добавление в историю при обновлении");
-        SubTask subTask7 = new SubTask (subTask6.getId(),
-                "Тест2", "На добавление в список при обновлении", TasksStatus.IN_PROGRESS,
-                epic1Created.getId());
-        inMemoryTaskManager.updateSubTasks(subTask7);
-        System.out.println("История:");
-        for (Task task : inMemoryTaskManager.getHistory()) {
-            System.out.println(task);
-        }
-        System.out.println();
-
-
-        System.out.println("Тест 22: проверяем, что эпик нельзя добавить в самого себя в виде подзадачи ");
+        System.out.println("Тест 21: проверяем, что эпик нельзя добавить в самого себя в виде подзадачи ");
         SubTask subTask8 = new SubTask("Подзадача в эпике", "Добавляем эпик в эпик", TasksStatus.NEW,
                 epic3.getId());
         subTask8.setId(epic3.getId());
@@ -196,8 +184,6 @@ public class Main {
         System.out.println("В списке нет нашей подзадачи");
         System.out.println(inMemoryTaskManager.getSubTaskFromEpic(epic3.getId()));
         System.out.println();
-
-
     }
 }
 
