@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Epic extends Task {
 
-    private ArrayList<Integer> subTaskId = new ArrayList<>();
+    private List<Integer> subTaskId = new ArrayList<>();
 
 
     public Epic(String name, String description) {
@@ -17,11 +17,11 @@ public class Epic extends Task {
         super(id, name, description);
     }
 
-    public ArrayList<Integer> getSubTaskId() {
+    public List<Integer> getSubTaskId() {
         return subTaskId;
     }
 
-    public void setSubTaskId(ArrayList<Integer> addToEpic) {
+    public void setSubTaskId(List<Integer> addToEpic) {
         this.subTaskId = addToEpic;
     }
 

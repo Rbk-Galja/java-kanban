@@ -66,7 +66,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             return subTaskThisEpic;
         } else {
-            ArrayList<Integer> idSubTask = epic.getSubTaskId();
+            List<Integer> idSubTask = epic.getSubTaskId();
             for (Integer id : idSubTask) {
                 if (subTasks.containsKey(id)) {
                     subTaskThisEpic.add(subTasks.get(id));
@@ -214,7 +214,7 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         ArrayList<SubTask> subTaskThisEpic = new ArrayList<>();
-        ArrayList<Integer> idSubTask = epicStatus.getSubTaskId();
+        List<Integer> idSubTask = epicStatus.getSubTaskId();
         for (Integer id : idSubTask) {
             if (subTasks.containsKey(id)) {
                 subTaskThisEpic.add(subTasks.get(id));
