@@ -200,7 +200,7 @@ public class Main {
         System.out.println("Создаем задачи для пользовательского сценария из ТЗ");
         Task task9 = new Task("Имя задачи 9", "Описание задачи 9", TasksStatus.NEW);
         inMemoryTaskManager.createTasks(task9);
-        Task task10 = new Task("Имя задачи 10", "Описание задачи 10", TasksStatus.IN_PROGRESS);
+        Task task10 = new Task("Имя задачи 10", "Описание задачи 10", TasksStatus.NEW);
         inMemoryTaskManager.createTasks(task10);
 
         Epic epic4 = new Epic("Имя эпика 4", "Описание эпика 4");
@@ -220,16 +220,16 @@ public class Main {
         System.out.println();
 
         System.out.println("Вызываем задачи для пользовательского сценария из ТЗ");
-        inMemoryTaskManager.getTaskById(task10.getId());
-        System.out.println("Вызвали задачу 10");
+        inMemoryTaskManager.getTaskById(task9.getId());
+        System.out.println("Вызвали задачу 9");
         System.out.println("История:");
         for (Task task : inMemoryTaskManager.getHistory()) {
             System.out.println(task);
         }
         System.out.println();
 
-        inMemoryTaskManager.getTaskById(task9.getId());
-        System.out.println("Вызвали задачу 9");
+        inMemoryTaskManager.getTaskById(task10.getId());
+        System.out.println("Вызвали задачу 10");
         System.out.println("История:");
         for (Task task : inMemoryTaskManager.getHistory()) {
             System.out.println(task);
@@ -277,8 +277,8 @@ public class Main {
         System.out.println();
 
         System.out.println("Удаляем задачи для пользовательского сценария из ТЗ");
-        inMemoryTaskManager.deleteTask(task10.getId());
-        System.out.println("Удалили задачу 10");
+        inMemoryTaskManager.deleteTask(task9.getId());
+        System.out.println("Удалили задачу 9");
         System.out.println("История:");
         for (Task task : inMemoryTaskManager.getHistory()) {
             System.out.println(task);
@@ -292,6 +292,7 @@ public class Main {
             System.out.println(task);
         }
         System.out.println();
+
     }
 }
 
