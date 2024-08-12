@@ -30,9 +30,9 @@ public interface TaskManager {
     //создание задач/подзадач/эпиков
     Task createTasks(Task task);
 
-    Epic creatEpic(Epic epic);
+    Epic createEpic(Epic epic);
 
-    SubTask creatSubtask(SubTask subTask);
+    SubTask createSubtask(SubTask subTask);
 
     //обновление подзадач/задач/эпиков
     Task updateTasks(Task task);
@@ -44,9 +44,9 @@ public interface TaskManager {
     // удаление задач/подзадач/эпиков по id
     boolean deleteTask(Integer taskId);
 
-    Integer deleteSubTasks(Integer id);
+    boolean deleteSubTasks(Integer id);
 
-    Integer deleteEpic(Integer id);
+    boolean deleteEpic(Integer id);
 
     // удаление всех задач/подзадач/эпиков
     void deleteAllTasks();
@@ -56,4 +56,5 @@ public interface TaskManager {
     void deleteAllEpics();
 
     List<Task> getHistory();
+
 }
