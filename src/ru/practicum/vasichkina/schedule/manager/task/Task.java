@@ -8,6 +8,8 @@ public class Task {
     private String name;
     private String description;
     private TasksStatus status;
+    protected TaskType taskType = TaskType.TASK;
+    protected Integer epicId;
 
     public Task(Integer id, String name, String description, TasksStatus status) {
         this.id = id;
@@ -33,6 +35,13 @@ public class Task {
         this.description = description;
     }
 
+    public Task(Integer id, String name, String description, TasksStatus status, TaskType taskType) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.taskType = taskType;
+    }
 
     public Integer getId() {
         return id;
@@ -66,6 +75,14 @@ public class Task {
         this.status = status;
     }
 
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public Integer getEpicId() {
+        return epicId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,4 +106,5 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
+
 }

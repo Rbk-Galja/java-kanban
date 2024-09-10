@@ -3,6 +3,7 @@ package ru.practicum.vasichkina.schedule.manager.task;
 public class SubTask extends Task {
 
     private Integer epicId;
+    protected TaskType taskType = TaskType.SUBTASK;
 
     public SubTask(Integer id, String name, String description, TasksStatus status, Integer epicId) {
         super(id, name, description, status);
@@ -14,12 +15,14 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
+    @Override
     public Integer getEpicId() {
         return epicId;
     }
 
-    public void setEpicId(Integer epicId) {
-        this.epicId = epicId;
+    @Override
+    public TaskType getTaskType() {
+        return taskType;
     }
 
     @Override
@@ -31,5 +34,4 @@ public class SubTask extends Task {
                 ", status=" + getStatus() +
                 '}';
     }
-
 }
