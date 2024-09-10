@@ -22,21 +22,21 @@ class InMemoryHistoryManagerTest {
     private static Epic epic;
     private static SubTask subTask;
 
-    @BeforeAll
-    static void beforeAll() {
-        task = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW);
-        epic = new Epic("Имя эпика", "Описание эпика");
-        subTask = create();
-    }
-
     @BeforeEach
     public void beforeEach() {
         historyManager = Manager.getDefault();
+        epic = new Epic("Имя эпика", "Описание эпика");
+        historyManager.createEpic(epic);
+
+        subTask = new SubTask("Имя подзадачи", "Описание подзадачи", TasksStatus.NEW, epic.getId());
+        historyManager.createSubtask(subTask);
+
+        task = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW);
+        historyManager.createTasks(task);
     }
 
     @Test
     void shouldSaveTaskInHistory() {
-        historyManager.createTasks(task);
         assertNotNull(task, "Задача не найдена");
         historyManager.getTaskById(task.getId());
 
@@ -52,7 +52,6 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void shouldSaveEpicInHistory() {
-        historyManager.createEpic(epic);
         assertNotNull(epic, "Эпик не найден");
         historyManager.getEpicById(epic.getId());
 
@@ -66,10 +65,8 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void shouldSaveSubTaskInHistory() {
-        historyManager.createEpic(epic);
         assertNotNull(epic, "Эпик не найден");
 
-        historyManager.createSubtask(subTask);
         assertNotNull(subTask, "Подзадача не найдена");
         historyManager.getSubTaskById(subTask.getId());
 
@@ -84,17 +81,14 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void shouldMoveViewedTaskTheTail() {
-        historyManager.createEpic(epic);
         assertNotNull(epic, "Эпик не найден");
         historyManager.getEpicById(epic.getId());
 
-        historyManager.createSubtask(subTask);
         assertNotNull(subTask, "Подзадача не найдена");
         List<SubTask> subTasks = historyManager.getSubTasks();
         assertEquals(subTasks.size(), 1, "Не сохраняет подзадачу");
         historyManager.getSubTaskFromEpic(epic.getId());
 
-        historyManager.createTasks(task);
         assertNotNull(task, "Задача не найдена");
         historyManager.getTaskById(task.getId());
 
@@ -106,13 +100,6 @@ class InMemoryHistoryManagerTest {
         newHistory = historyManager.getHistory();
         assertEquals(newHistory.size(), 3, "Не удаляет предыдущий вызов задачи в истории");
         assertEquals(newHistory.get(2), epic, "Не сохраняет в хвост последнюю вызванную задачу");
-    }
-
-    private static SubTask create() {
-        historyManager = Manager.getDefault();
-        Epic epic1 = new Epic("И", "О");
-        historyManager.createEpic(epic1);
-        return new SubTask("Имя подзадачи", "Описание подзадачи", TasksStatus.NEW, epic1.getId());
     }
 
 }

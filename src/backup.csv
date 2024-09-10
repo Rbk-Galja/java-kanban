@@ -1,5 +1,0 @@
-id,type,name,status,description,epic
-1,TASK,Имя задачи,NEW,Описание задачи
-2,EPIC,Имя эпика,IN_PROGRESS,Описание эпика
-3,SUBTASK,Имя новой подзадачи,IN_PROGRESS,Описание новой подзадачи,2
-4,SUBTASK,Имя подзадачи2,NEW,Описание подзадачи 2,2
