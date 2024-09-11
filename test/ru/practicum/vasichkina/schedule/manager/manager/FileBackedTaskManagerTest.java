@@ -64,6 +64,9 @@ public class FileBackedTaskManagerTest {
                 epic.getId());
         fileManager.createSubtask(subTask);
 
+        boolean fileCreate = file.isFile();
+        assertTrue(fileCreate, "Не создает файл");
+
         List<String> saveTask = Files.readAllLines(file.toPath());
         assertEquals(saveTask.size(), 4, "Сохраняет неверное количество задач");
 
