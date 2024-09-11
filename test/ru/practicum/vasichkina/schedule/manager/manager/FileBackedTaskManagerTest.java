@@ -9,6 +9,7 @@ import ru.practicum.vasichkina.schedule.manager.task.TasksStatus;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class FileBackedTaskManagerTest {
                 epic.getId());
         fileManager.createSubtask(subTask);
 
-        List<String> saveTask = Files.readAllLines(file.toPath());
+        List<String> saveTask = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
         assertEquals(4, saveTask.size(), "Сохраняет неверное количество задач");
 
         Task testTask = CSVFormatter.fromString(saveTask.get(1));
@@ -85,7 +86,7 @@ public class FileBackedTaskManagerTest {
         Epic loadEpic = epicList.getFirst();
         assertEquals(loadEpic, epic, "Возвращает неверный эпик");
 
-        SubTask loadSunTask = subTasksList.getFirst();
-        assertEquals(loadSunTask, subTask, "Возвращает неверную подзадачу");
+        SubTask loadSubTask = subTasksList.getFirst();
+        assertEquals(loadSubTask, subTask, "Возвращает неверную подзадачу");
     }
 }
