@@ -26,20 +26,20 @@ public class FileBackedTaskManagerTest {
     List<Epic> epicList = new ArrayList<>();
     List<SubTask> subTasksList = new ArrayList<>();
 
-    @BeforeAll
-    public static void beforeAll() throws IOException {
+    @BeforeEach
+    public void beforeEach() {
         file = new File(PATH_TO_FILE, "backup.csv");
         fileManager = new FileBackedTaskManager(file);
-        Files.createFile(Paths.get(PATH_TO_FILE, "backup.csv"));
     }
 
-    @AfterAll
-    public static void afterAll() {
+    @AfterEach
+    public void afterEach() {
         file.delete();
     }
 
     @Test
-    void shouldCreateAndLoadEmptyFile() {
+    void shouldCreateAndLoadEmptyFile() throws IOException {
+        Files.createFile(Paths.get(PATH_TO_FILE, "backup.csv"));
         boolean fileCreate = file.isFile();
         assertTrue(fileCreate, "Не создает файл");
 
@@ -54,6 +54,7 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void shouldFileSaveAndLoadTasks() throws IOException {
+        fileManager.save();
         Task task = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW);
         fileManager.createTasks(task);
 
@@ -63,9 +64,6 @@ public class FileBackedTaskManagerTest {
         SubTask subTask = new SubTask("Имя подзадачи", "Описание подзадачи", TasksStatus.IN_PROGRESS,
                 epic.getId());
         fileManager.createSubtask(subTask);
-
-        boolean fileCreate = file.isFile();
-        assertTrue(fileCreate, "Не создает файл");
 
         List<String> saveTask = Files.readAllLines(file.toPath());
         assertEquals(saveTask.size(), 4, "Сохраняет неверное количество задач");

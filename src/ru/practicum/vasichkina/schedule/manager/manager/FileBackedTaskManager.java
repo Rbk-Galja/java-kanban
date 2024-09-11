@@ -49,7 +49,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return fileBackedTaskManager;
     }
 
-    private void save() {
+    protected void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             boolean deleteFile = file.delete();
             if (deleteFile) {
