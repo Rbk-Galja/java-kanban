@@ -27,19 +27,19 @@ public class FileBackedTaskManagerTest {
     List<Epic> epicList = new ArrayList<>();
     List<SubTask> subTasksList = new ArrayList<>();
 
-    @BeforeAll
-    public static void beforeAll() throws IOException {
+    @BeforeEach
+    public void beforeEach() throws IOException {
         file = new File(PATH_TO_FILE, "backup.csv");
         fileManager = new FileBackedTaskManager(file);
         Files.createFile(Paths.get(PATH_TO_FILE, "backup.csv"));
     }
 
-    @AfterAll
-    public static void afterAll() {
+    @AfterEach
+    public void afterEach() {
         file.delete();
     }
 
-  /*  @Test
+   /* @Test
     void shouldCreateAndLoadEmptyFile() {
         boolean fileCreate = file.isFile();
         assertTrue(fileCreate, "Не создает файл");
