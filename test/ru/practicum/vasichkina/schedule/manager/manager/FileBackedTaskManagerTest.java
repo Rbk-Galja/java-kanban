@@ -65,7 +65,7 @@ public class FileBackedTaskManagerTest {
         fileManager.createSubtask(subTask);
 
         List<String> saveTask = Files.readAllLines(file.toPath());
-        assertEquals(saveTask.size(), 4, "Сохраняет неверное количество задач");
+        assertEquals(4, saveTask.size(), "Сохраняет неверное количество задач");
 
         Task testTask = CSVFormatter.fromString(saveTask.get(1));
         assertEquals(testTask, task, "Сохраняет неверную задачу");
@@ -75,9 +75,9 @@ public class FileBackedTaskManagerTest {
         epicList = loadFile.getEpic();
         subTasksList = loadFile.getSubTasks();
 
-        assertEquals(taskList.size(), 1, "Возвращает неверное количество задач");
-        assertEquals(epicList.size(), 1, "Возвращает неверное количество эпиков");
-        assertEquals(subTasksList.size(), 1, "Возвращает неверное количество подзадач");
+        assertEquals(1, taskList.size(), "Возвращает неверное количество задач");
+        assertEquals(1, epicList.size(), "Возвращает неверное количество эпиков");
+        assertEquals(1, subTasksList.size(), "Возвращает неверное количество подзадач");
 
         Task loadTask = taskList.getFirst();
         assertEquals(loadTask, task, "Возвращает неверную задачу");
