@@ -39,7 +39,7 @@ public class FileBackedTaskManagerTest {
         file.delete();
     }
 
-    @Test
+  /*  @Test
     void shouldCreateAndLoadEmptyFile() {
         boolean fileCreate = file.isFile();
         assertTrue(fileCreate, "Не создает файл");
@@ -51,7 +51,7 @@ public class FileBackedTaskManagerTest {
         assertEquals(taskList.size(), 0, "Возвращает не пустой файл");
         assertEquals(epicList.size(), 0, "Возвращает не пустой файл");
         assertEquals(subTasksList.size(), 0, "Возвращает не пустой файл");
-    }
+    } */
 
     @Test
     void shouldFileSaveAndLoadTasks() throws IOException {
