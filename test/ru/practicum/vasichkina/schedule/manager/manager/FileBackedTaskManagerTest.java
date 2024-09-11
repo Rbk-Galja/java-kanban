@@ -1,8 +1,6 @@
 package ru.practicum.vasichkina.schedule.manager.manager;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.practicum.vasichkina.schedule.manager.task.Epic;
 import ru.practicum.vasichkina.schedule.manager.task.SubTask;
 import ru.practicum.vasichkina.schedule.manager.task.Task;
@@ -28,15 +26,15 @@ public class FileBackedTaskManagerTest {
     List<Epic> epicList = new ArrayList<>();
     List<SubTask> subTasksList = new ArrayList<>();
 
-    @BeforeEach
-    public void beforeEach() throws IOException {
+    @BeforeAll
+    public static void beforeAll() throws IOException {
         file = new File(PATH_TO_FILE, "backup.csv");
         fileManager = new FileBackedTaskManager(file);
         Files.createFile(Paths.get(PATH_TO_FILE, "backup.csv"));
     }
 
-    @AfterEach
-    public void afterEach() {
+    @AfterAll
+    public static void afterAll() {
         file.delete();
     }
 
