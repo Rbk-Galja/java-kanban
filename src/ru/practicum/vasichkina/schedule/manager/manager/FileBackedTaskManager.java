@@ -22,6 +22,62 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
+    public static void main(String[] args) {
+
+        FileBackedTaskManager fileManager = new FileBackedTaskManager(file);
+
+        System.out.println("Создаём задачи");
+
+        Task task = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW);
+        fileManager.createTasks(task);
+
+        Epic epic = new Epic("Имя эпика", "Описание эпика");
+        fileManager.createEpic(epic);
+
+        SubTask subTask = new SubTask("Имя подзадачи", "Описание подзадачи", TasksStatus.NEW,
+                epic.getId());
+        fileManager.createSubtask(subTask);
+
+        SubTask subTask1 = new SubTask("Имя подзадачи2", "Описание подзадачи 2", TasksStatus.NEW,
+                epic.getId());
+        fileManager.createSubtask(subTask1);
+
+        List<String> tasks;
+        try {
+            tasks = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(tasks);
+        System.out.println();
+
+        System.out.println("Обновляем подзадачу");
+
+        SubTask subTask2 = new SubTask(subTask.getId(), "Имя новой подзадачи", "Описание новой подзадачи",
+                TasksStatus.IN_PROGRESS, subTask.getEpicId());
+        fileManager.updateSubTasks(subTask2);
+
+        try {
+            tasks = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(tasks);
+        System.out.println();
+
+        System.out.println("Вызываем файл");
+        loadFromFile();
+        FileBackedTaskManager newFileManager = loadFromFile();
+
+        List<Task> task1 = newFileManager.getTasks();
+        List<Epic> epic1 = newFileManager.getEpic();
+        List<SubTask> subTaskList = newFileManager.getSubTasks();
+        System.out.println(task1 + "\n" + epic1 + "\n" + subTaskList);
+
+        file.delete();
+
+    }
+
     public static FileBackedTaskManager loadFromFile() {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
         try {

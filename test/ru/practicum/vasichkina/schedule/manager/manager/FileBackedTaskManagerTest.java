@@ -66,7 +66,7 @@ public class FileBackedTaskManagerTest {
         fileManager.createSubtask(subTask);
 
         List<String> saveTask = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
-        assertEquals(4, 4, "Сохраняет неверное количество задач");
+        assertEquals(4, saveTask.size(), "Сохраняет неверное количество задач");
 
         Task testTask = CSVFormatter.fromString(saveTask.get(1));
         assertEquals(testTask, task, "Сохраняет неверную задачу");
