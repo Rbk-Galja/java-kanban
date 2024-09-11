@@ -21,8 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FileBackedTaskManagerTest {
 
-    static String[] pathName = {"E:", "IDEA", "java-kanban", "src"};
-    private static final String PATH_TO_FILE = String.join(File.separator, pathName);
+    private static final String PATH_TO_FILE = "./src";
     private static FileBackedTaskManager fileManager;
     private static File file;
     List<Task> taskList = new ArrayList<>();
@@ -31,7 +30,7 @@ public class FileBackedTaskManagerTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        file = new File(PATH_TO_FILE, "backUp.csv");
+        file = new File(PATH_TO_FILE, "backup.csv");
         fileManager = new FileBackedTaskManager(file);
         Files.createFile(Paths.get(PATH_TO_FILE, "backup.csv"));
     }

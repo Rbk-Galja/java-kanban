@@ -15,8 +15,7 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    static String[] pathName = {"E:", "IDEA", "java-kanban", "src"};
-    private static final String PATH_TO_FILE = String.join(File.separator, pathName);
+    private static final String PATH_TO_FILE = "./src";
     private static File file = new File(PATH_TO_FILE, "backup.csv");
 
     public FileBackedTaskManager(File file) {
