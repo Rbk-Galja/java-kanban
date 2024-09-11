@@ -21,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FileBackedTaskManagerTest {
 
-    private final static String PATH_TO_FILE = "E:\\IDEA\\java-kanban\\src";
+    static String[] pathName = {"E:", "IDEA", "java-kanban", "src"};
+    private static final String PATH_TO_FILE = String.join(File.separator, pathName);
     private static FileBackedTaskManager fileManager;
     private static File file;
     List<Task> taskList = new ArrayList<>();

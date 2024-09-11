@@ -15,7 +15,8 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private static final String PATH_TO_FILE = "E:\\IDEA\\java-kanban\\src";
+    static String[] pathName = {"E:", "IDEA", "java-kanban", "src"};
+    private static final String PATH_TO_FILE = String.join(File.separator, pathName);
     private static File file = new File(PATH_TO_FILE, "backup.csv");
 
     public FileBackedTaskManager(File file) {
@@ -53,7 +54,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         System.out.println("Обновляем подзадачу");
 
-       SubTask subTask2 = new SubTask(subTask.getId(),"Имя новой подзадачи", "Описание новой подзадачи",
+        SubTask subTask2 = new SubTask(subTask.getId(), "Имя новой подзадачи", "Описание новой подзадачи",
                 TasksStatus.IN_PROGRESS, subTask.getEpicId());
         fileManager.updateSubTasks(subTask2);
 
