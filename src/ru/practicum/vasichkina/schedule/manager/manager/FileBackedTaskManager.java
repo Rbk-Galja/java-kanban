@@ -6,9 +6,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +20,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         FileBackedTaskManager fileManager = new FileBackedTaskManager(file);
 
@@ -43,11 +41,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         fileManager.createSubtask(subTask1);
 
         List<String> tasks;
-        try {
-            tasks = Files.readAllLines(file.toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        tasks = Files.readAllLines(file.toPath());
         System.out.println(tasks);
         System.out.println();
 
@@ -57,11 +51,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 TasksStatus.IN_PROGRESS, subTask.getEpicId());
         fileManager.updateSubTasks(subTask2);
 
-        try {
-            tasks = Files.readAllLines(file.toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        tasks = Files.readAllLines(file.toPath());
         System.out.println(tasks);
         System.out.println();
 
@@ -106,11 +96,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     protected void save() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            boolean deleteFile = file.delete();
-            if (deleteFile) {
-                Files.createFile(Paths.get(PATH_TO_FILE, "backup.csv"));
-            }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
             bw.write(CSVFormatter.getHeader());
             bw.newLine();
             for (Task task : getTasks()) {
