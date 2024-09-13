@@ -27,9 +27,10 @@ public class FileBackedTaskManagerTest {
     List<SubTask> subTasksList = new ArrayList<>();
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws IOException {
         file = new File(PATH_TO_FILE, "backup.csv");
         fileManager = new FileBackedTaskManager(file);
+        Files.createFile(file.toPath());
     }
 
     @AfterEach
@@ -40,7 +41,6 @@ public class FileBackedTaskManagerTest {
     @Test
     @DisplayName("Создание и загрузка пустого файла")
     void shouldCreateAndLoadEmptyFile() {
-        fileManager.save();
         boolean fileCreate = file.isFile();
         assertTrue(fileCreate, "Не создает файл");
 
