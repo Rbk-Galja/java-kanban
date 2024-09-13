@@ -14,7 +14,8 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private static final String PATH_TO_FILE = "src" + File.separator + "resources";
+    private static final String[] path = {"src", "ru", "practicum", "vasichkina", "schedule", "manager", "resources"};
+    private static final String PATH_TO_FILE = String.join(File.separator, path);
     private static File file = new File(PATH_TO_FILE, "backup.csv");
 
     public FileBackedTaskManager(File file) {
@@ -98,7 +99,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     protected void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
-
             bw.write(CSVFormatter.getHeader());
             bw.newLine();
             for (Task task : getTasks()) {
