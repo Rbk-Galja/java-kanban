@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class FileBackedTaskManagerTest {
     List<SubTask> subTasksList = new ArrayList<>();
 
     @BeforeEach
-    public void beforeEach() throws IOException {
-        file = Files.createTempFile(Path.of(PATH_TO_FILE), "backup", ".csv").toFile();
+    public void beforeEach() {
+        file = new File(PATH_TO_FILE, "backup.csv");
         fileManager = new FileBackedTaskManager(file);
     }
 
@@ -41,6 +40,7 @@ public class FileBackedTaskManagerTest {
     @Test
     @DisplayName("Создание и загрузка пустого файла")
     void shouldCreateAndLoadEmptyFile() {
+        fileManager.save();
         boolean fileCreate = file.isFile();
         assertTrue(fileCreate, "Не создает файл");
 
