@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Тест менеджера создания файла бэкапа")
 public class FileBackedTaskManagerTest {
 
-    private static final String PATH_TO_FILE = "./resources";
+    private static final String PATH_TO_FILE = "src" + File.separator + "resources";
     private static FileBackedTaskManager fileManager;
     private static File file;
     List<Task> taskList = new ArrayList<>();
