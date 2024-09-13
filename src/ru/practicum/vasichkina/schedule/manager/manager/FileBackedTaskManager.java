@@ -1,5 +1,6 @@
 package ru.practicum.vasichkina.schedule.manager.manager;
 
+import ru.practicum.vasichkina.schedule.manager.exceptions.ManagerSaveException;
 import ru.practicum.vasichkina.schedule.manager.task.*;
 
 import java.io.BufferedWriter;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private static final String PATH_TO_FILE = "./src";
+    private static final String PATH_TO_FILE = "./resources";
     private static File file = new File(PATH_TO_FILE, "backup.csv");
 
     public FileBackedTaskManager(File file) {
@@ -97,6 +98,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     protected void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) {
+
             bw.write(CSVFormatter.getHeader());
             bw.newLine();
             for (Task task : getTasks()) {

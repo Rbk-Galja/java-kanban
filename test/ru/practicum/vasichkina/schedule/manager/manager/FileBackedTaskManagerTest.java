@@ -11,16 +11,16 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@DisplayName("Тест менеджера создания файла бэкапа")
 public class FileBackedTaskManagerTest {
 
-    private static final String PATH_TO_FILE = "./src";
+    private static final String PATH_TO_FILE = "./resources";
     private static FileBackedTaskManager fileManager;
     private static File file;
     List<Task> taskList = new ArrayList<>();
@@ -29,9 +29,8 @@ public class FileBackedTaskManagerTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        file = new File(PATH_TO_FILE, "backup.csv");
+        file = Files.createTempFile(Path.of(PATH_TO_FILE), "backup", ".csv").toFile();
         fileManager = new FileBackedTaskManager(file);
-        Files.createFile(Paths.get(PATH_TO_FILE, "backup.csv"));
     }
 
     @AfterEach
@@ -40,6 +39,7 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Создание и загрузка пустого файла")
     void shouldCreateAndLoadEmptyFile() {
         boolean fileCreate = file.isFile();
         assertTrue(fileCreate, "Не создает файл");
@@ -54,6 +54,7 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Сохранение и выгрузка задач из файла")
     void shouldFileSaveAndLoadTasks() throws IOException {
         Task task = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW);
         fileManager.createTasks(task);

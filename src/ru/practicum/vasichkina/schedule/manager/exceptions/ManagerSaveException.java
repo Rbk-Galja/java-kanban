@@ -1,4 +1,4 @@
-package ru.practicum.vasichkina.schedule.manager.manager;
+package ru.practicum.vasichkina.schedule.manager.exceptions;
 
 public class ManagerSaveException extends RuntimeException {
 

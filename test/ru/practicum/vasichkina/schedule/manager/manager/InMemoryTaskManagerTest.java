@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Тесты менеджера задач")
 class InMemoryTaskManagerTest {
 
     private static TaskManager taskManager;
@@ -35,6 +36,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Создание и получение задачи")
     void shouldCreateTask() {
         assertNotNull(task, "Задача не найдена");
 
@@ -52,6 +54,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Создание и получение эпика")
     void shouldCreateEpic() {
         assertNotNull(epic, "Эпик не найден");
 
@@ -69,6 +72,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Создание и получение подхадачи")
     void shouldCreateSubTask() {
         assertNotNull(subTask, "Подзадача не найдена");
 
@@ -83,6 +87,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Удаление задачи")
     void shouldDeleteTask() {
         assertNotNull(task, "Подзадача не создана");
 
@@ -92,6 +97,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Удалени эпика")
     void shouldDeleteEpic() {
         assertNotNull(epic, "Эпик не создан");
 
@@ -101,6 +107,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Удаление подзадачи")
     void shouldDeleteSubTask() {
         assertNotNull(subTask, "Подзадача не создана");
         taskManager.deleteSubTasks(subTask.getId());
@@ -111,6 +118,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Обновление задачи")
     void shouldUpdateTask() {
         assertNotNull(task, "Задача не создана");
 
@@ -128,6 +136,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Обновление эпика")
     void shouldUpdateEpic() {
         assertNotNull(epic, "Эпик не создан");
 
@@ -145,6 +154,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Обновление подзадачи")
     void shouldUpdateSubTask() {
         assertNotNull(epic, "Эпик не создан");
         assertNotNull(subTask, "Подзадача не создана");
@@ -164,6 +174,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Обновление статуса эпика")
     void shouldUpdateEpicStatus() {
         assertEquals(epic.getStatus(), subTask.getStatus(), "Статус эпика и подзадачи не совпадает");
 
@@ -174,6 +185,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Определение идентичности задач, если равны их айди")
     void shouldTaskBeEqualsIfEqualsId() {
         int id = task.getId();
         Task task2 = new Task("Имя новой задачи", "Описание новой задачи", TasksStatus.IN_PROGRESS);
@@ -184,6 +196,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Определение идентичности эпиков, если равны их айди")
     void shouldEpicBeEqualsIfEqualsId() {
         int id = epic.getId();
         Epic epic2 = new Epic("Имя нового эпика", "Описание нового эпика");
@@ -194,6 +207,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Определение идентичности подзадач, если равны их айди")
     void shouldSubTaskBeEqualsIfEqualsId() {
         int id = subTask.getId();
         SubTask subTask2 = new SubTask("Имя второй подзадачи", "Описание второй подзадачи",
@@ -205,6 +219,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Может ли добавить эпик в самого себя")
     void shouldNotAddEpicToHimself() {
         int id = epic.getId();
         assertNotNull(epic, "Эпик не создан");
@@ -222,6 +237,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    @DisplayName("Меняет ли сеттер данные всех типов задач")
     void shouldSetterNotChangeDataInManager() {
         assertNotNull(taskManager.getEpicById(epic.getId()), "Эпик не создан");
         assertNotNull(taskManager.getSubTaskById(subTask.getId()), "Подзадача не создана");

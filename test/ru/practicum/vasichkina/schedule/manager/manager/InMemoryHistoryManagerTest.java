@@ -2,6 +2,7 @@ package ru.practicum.vasichkina.schedule.manager.manager;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.practicum.vasichkina.schedule.manager.task.Epic;
 import ru.practicum.vasichkina.schedule.manager.task.SubTask;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Тесты менеджера сохранения истории задач")
 class InMemoryHistoryManagerTest {
 
     private static TaskManager historyManager;
@@ -36,6 +38,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
+    @DisplayName("Сохранение задачи в историю при создании")
     void shouldSaveTaskInHistory() {
         assertNotNull(task, "Задача не найдена");
         historyManager.getTaskById(task.getId());
@@ -51,12 +54,13 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
+    @DisplayName("Сохранение эпика в истории при создании")
     void shouldSaveEpicInHistory() {
         assertNotNull(epic, "Эпик не найден");
         historyManager.getEpicById(epic.getId());
 
         history = historyManager.getHistory();
-        assertEquals(1, history.size(), "Не сохраняет задачу в историю");
+        assertEquals(1, history.size(), "Не сохраняет эпик в историю");
 
         historyManager.deleteEpic(epic.getId());
         newHistory = historyManager.getHistory();
@@ -64,6 +68,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
+    @DisplayName("Сохранение подзадачи в истории")
     void shouldSaveSubTaskInHistory() {
         assertNotNull(epic, "Эпик не найден");
 
@@ -80,6 +85,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
+    @DisplayName("Добавление последней вызванной задачи в хвост")
     void shouldMoveViewedTaskTheTail() {
         assertNotNull(epic, "Эпик не найден");
         historyManager.getEpicById(epic.getId());
