@@ -14,16 +14,17 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private static final String[] path = {"src", "ru", "practicum", "vasichkina", "schedule", "manager", "resources"};
-    private static final String PATH_TO_FILE = String.join(File.separator, path);
-    private static File file = new File(PATH_TO_FILE, "backup.csv");
+    private static final String[] path = {"src", "ru", "practicum", "vasichkina", "schedule", "manager"};
+    private static final String PATH_TO_DIR = String.join(File.separator, path);
+    private static final File dir = new File(PATH_TO_DIR, "resources");
+    private static File file = new File(PATH_TO_DIR + File.separator + "resources", "backup.csv");
 
     public FileBackedTaskManager(File file) {
         this.file = file;
     }
 
     public static void main(String[] args) throws IOException {
-
+        Files.createDirectories(dir.toPath());
         FileBackedTaskManager fileManager = new FileBackedTaskManager(file);
 
         System.out.println("Создаём задачи");
@@ -49,8 +50,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         System.out.println("Обновляем подзадачу");
 
-        SubTask subTask2 = new SubTask(subTask.getId(), "Имя новой подзадачи", "Описание новой подзадачи",
-                TasksStatus.IN_PROGRESS, subTask.getEpicId());
+        SubTask subTask2 = new SubTask(subTask.getId(), "Имя новой подзадачи",
+                "Описание новой подзадачи", TasksStatus.IN_PROGRESS, subTask.getEpicId());
         fileManager.updateSubTasks(subTask2);
 
         tasks = Files.readAllLines(file.toPath());
@@ -67,6 +68,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         System.out.println(task1 + "\n" + epic1 + "\n" + subTaskList);
 
         file.delete();
+        dir.delete();
 
     }
 
