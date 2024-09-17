@@ -12,12 +12,12 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private int nextId;
+    protected static int nextId = 0;
     private final HistoryManager historyManager = Manager.getDefaultHistory();
 
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, SubTask> subTasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
+    protected final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, SubTask> subTasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
 
     //получение всех задач, подзадач и эпиков
     @Override

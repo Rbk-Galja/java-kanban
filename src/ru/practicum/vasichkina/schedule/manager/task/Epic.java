@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class Epic extends Task {
 
+    protected TaskType taskType = TaskType.EPIC;
     private List<Integer> subTaskId = new ArrayList<>();
 
 
@@ -17,12 +18,21 @@ public class Epic extends Task {
         super(id, name, description);
     }
 
+    public Epic(Integer id, String name, String description, TasksStatus status) {
+        super(id, name, description, status);
+    }
+
     public List<Integer> getSubTaskId() {
         return subTaskId;
     }
 
     public void setSubTaskId(List<Integer> addToEpic) {
         this.subTaskId = addToEpic;
+    }
+
+    @Override
+    public TaskType getTaskType() {
+        return taskType;
     }
 
 
@@ -48,4 +58,5 @@ public class Epic extends Task {
     public int hashCode() {
         return Objects.hash(super.hashCode(), subTaskId);
     }
+
 }

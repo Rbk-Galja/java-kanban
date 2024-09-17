@@ -12,7 +12,9 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
+
         testsTasks();
+        testHistory();
     }
 
     public static void testsTasks() {
@@ -161,23 +163,12 @@ public class Main {
         System.out.println("В списке нет нашей подзадачи");
         System.out.println(inMemoryTaskManager.getSubTaskFromEpic(epic3.getId()));
         System.out.println();
+    }
 
-        System.out.println("Тест 20: просмотр истории");
-        System.out.println("История:");
-        for (Task task : inMemoryTaskManager.getHistory()) {
-            System.out.println(task);
-        }
-        System.out.println();
+    public static void testHistory() {
+        TaskManager inMemoryTaskManager = Manager.getDefault();
 
-        System.out.println("Тест 21: проверка дублей в истории");
-        System.out.println(inMemoryTaskManager.getEpicById(epic3.getId()));
-        System.out.println("История:");
-        for (Task task : inMemoryTaskManager.getHistory()) {
-            System.out.println(task);
-        }
-        System.out.println();
-
-        System.out.println("Тест 22: проверка добавления в историю при создании");
+        System.out.println("Тест 20: проверка добавление в историю при создании");
         Task task8 = new Task("Имя", "Описание", TasksStatus.NEW);
         inMemoryTaskManager.createTasks(task8);
         System.out.println(inMemoryTaskManager.getTaskById(task8.getId()));
@@ -187,7 +178,7 @@ public class Main {
         }
         System.out.println();
 
-        System.out.println("Тест 23: проверка полной очистки истории");
+        System.out.println("Тест 21: проверка полной очистки истории");
         inMemoryTaskManager.deleteAllTasks();
         inMemoryTaskManager.deleteAllSubTasks();
         inMemoryTaskManager.deleteAllEpics();
