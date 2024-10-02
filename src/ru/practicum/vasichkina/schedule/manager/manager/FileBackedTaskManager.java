@@ -69,7 +69,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         file.delete();
         dir.delete();
-
     }
 
     public static FileBackedTaskManager loadFromFile() {
