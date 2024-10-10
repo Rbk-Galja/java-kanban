@@ -2,6 +2,9 @@ package ru.practicum.vasichkina.schedule.manager.manager;
 
 import ru.practicum.vasichkina.schedule.manager.task.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 
 public class CSVFormatter {
 
@@ -15,7 +18,9 @@ public class CSVFormatter {
                 .append(task.getTaskType()).append(",")
                 .append(task.getName()).append(",")
                 .append(task.getStatus()).append(",")
-                .append(task.getDescription());
+                .append(task.getDescription()).append(",")
+                .append(task.getStartTime()).append(",")
+                .append(task.getDurationTask().toMinutes());
         if (task.getTaskType().equals(TaskType.SUBTASK)) {
             sb.append(",").append(task.getEpicId());
         }
@@ -29,17 +34,19 @@ public class CSVFormatter {
         String name = str[2];
         TasksStatus status = TasksStatus.valueOf(str[3]);
         String description = str[4];
+        LocalDateTime startTime = LocalDateTime.parse(str[5]);
+        int duration = Integer.parseInt(str[6]);
         if (type.equals(TaskType.TASK)) {
-            return new Task(id, name, description, status);
+            return new Task(id, name, description, status, Duration.ofMinutes(duration), startTime);
         } else if (type.equals(TaskType.SUBTASK)) {
-            int epicId = Integer.parseInt(str[5]);
-            return new SubTask(id, name, description, status, epicId);
+            int epicId = Integer.parseInt(str[7]);
+            return new SubTask(id, name, description, status, Duration.ofMinutes(duration), startTime, epicId);
         } else {
-            return new Epic(id, name, description, status);
+            return new Epic(id, name, description, status, Duration.ofMinutes(duration), startTime);
         }
     }
 
     protected static String getHeader() {
-        return "id,type,name,status,description,epic";
+        return "id,type,name,status,description,duration,startTime,epic";
     }
 }
