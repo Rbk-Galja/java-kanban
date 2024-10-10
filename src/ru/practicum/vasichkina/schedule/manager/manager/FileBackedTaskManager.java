@@ -16,8 +16,10 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private static final String PATH_TO_FILE = "./resources";
-    private static File file = new File(PATH_TO_FILE, "backup.csv");
+    private static final String[] path = {"src", "ru", "practicum", "vasichkina", "schedule", "manager"};
+    private static final String PATH_TO_DIR = String.join(File.separator, path);
+    private static final File dir = new File(PATH_TO_DIR, "resources");
+    private static File file = new File(PATH_TO_DIR + File.separator + "resources", "backup.csv");
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -25,6 +27,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static void main(String[] args) throws IOException {
 
+        Files.createDirectories(dir.toPath());
         FileBackedTaskManager fileManager = new FileBackedTaskManager(file);
 
         System.out.println("Создаём задачи");
@@ -74,7 +77,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         System.out.println();
 
-        file.delete();
+       // file.delete();
+       // dir.delete();
     }
 
     public static FileBackedTaskManager loadFromFile() {

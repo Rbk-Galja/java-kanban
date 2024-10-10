@@ -21,7 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Тест менеджера создания файла бэкапа")
 public class FileBackedTaskManagerTest extends TaskManagerTest {
 
-    private static final String PATH_TO_FILE = "./resources";
+    private static final String[] path = {"src", "ru", "practicum", "vasichkina", "schedule", "manager"};
+    private static final String PATH_TO_DIR = String.join(File.separator, path);
+    private static File dir;
     private static File file;
     List<Task> taskList = new ArrayList<>();
     List<Epic> epicList = new ArrayList<>();
@@ -36,7 +38,9 @@ public class FileBackedTaskManagerTest extends TaskManagerTest {
     @Override
     @BeforeEach
     public void setUp() throws IOException {
-        file = new File(PATH_TO_FILE, "backup.csv");
+        dir = new File(PATH_TO_DIR, "resources");
+        file = new File(PATH_TO_DIR + File.separator + "resources", "backup.csv");
+        Files.createDirectories(dir.toPath());
         Files.createFile(file.toPath());
         taskManager = new FileBackedTaskManager(file);
         epic = new Epic("Имя эпика", "Описание эпика");
@@ -54,6 +58,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest {
     @AfterEach
     public void afterEach() {
         file.delete();
+        dir.delete();
     }
 
     @Test
