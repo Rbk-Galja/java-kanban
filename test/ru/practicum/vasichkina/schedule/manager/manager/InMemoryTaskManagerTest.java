@@ -1,83 +1,72 @@
 package ru.practicum.vasichkina.schedule.manager.manager;
 
 import org.junit.jupiter.api.*;
+import ru.practicum.vasichkina.schedule.manager.exceptions.InvalidTaskException;
 import ru.practicum.vasichkina.schedule.manager.task.Epic;
 import ru.practicum.vasichkina.schedule.manager.task.SubTask;
 import ru.practicum.vasichkina.schedule.manager.task.Task;
 import ru.practicum.vasichkina.schedule.manager.task.TasksStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тесты менеджера задач")
-class InMemoryTaskManagerTest {
+class InMemoryTaskManagerTest extends TaskManagerTest {
 
-    private static TaskManager taskManager;
-    private static Task task;
-    private static Epic epic;
-    private static SubTask subTask;
     private static List<Task> savedTask = new ArrayList<>();
     private static List<Epic> savedEpic = new ArrayList<>();
     private static List<SubTask> savedSubTask = new ArrayList<>();
 
-    @BeforeEach
-    public void beforeEach() {
-        taskManager = Manager.getDefault();
-        epic = new Epic("Имя эпика", "Описание эпика");
-        taskManager.createEpic(epic);
-
-        subTask = new SubTask("Имя подзадачи", "Описание подзадачи", TasksStatus.NEW, epic.getId());
-        taskManager.createSubtask(subTask);
-
-        task = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW);
-        taskManager.createTasks(task);
+    @Override
+    protected InMemoryTaskManager createTaskManager() {
+        return new InMemoryTaskManager();
     }
 
+    @Override
     @Test
     @DisplayName("Создание и получение задачи")
     void shouldCreateTask() {
         assertNotNull(task, "Задача не найдена");
 
-        Task getTask = taskManager.getTaskById(task.getId());
-        assertEquals(task, getTask, "Возвращает неверную задачу");
-
-        Task task3 = new Task("Имя второй задачи", "Описание второй задачи", TasksStatus.NEW);
-        taskManager.createTasks(task3);
+        Optional getTask = taskManager.getTaskById(task.getId());
+        assertEquals(task, getTask.get(), "Возвращает неверную задачу");
 
         savedTask = taskManager.getTasks();
 
-        assertEquals(2, savedTask.size(), "Неверное количество задач");
+        assertEquals(1, savedTask.size(), "Неверное количество задач");
         assertNotNull(savedTask, "Не получаем список задач");
         assertEquals(task, savedTask.getFirst(), "Возвращает неверную задачу");
     }
 
+    @Override
     @Test
     @DisplayName("Создание и получение эпика")
     void shouldCreateEpic() {
         assertNotNull(epic, "Эпик не найден");
 
-        Epic getEpic = taskManager.getEpicById(epic.getId());
-        assertEquals(epic, getEpic, "Возвращает неверный эпик");
-
-        Epic epic2 = new Epic("Второй эпик", "Описание второго эпика");
-        taskManager.createEpic(epic2);
+        Optional getEpic = taskManager.getEpicById(epic.getId());
+        assertEquals(epic, getEpic.get(), "Возвращает неверный эпик");
 
         savedEpic = taskManager.getEpic();
 
         assertNotNull(savedEpic, "Не получаем список эпиков");
-        assertEquals(2, savedEpic.size(), "Неверное количество эпиков");
+        assertEquals(1, savedEpic.size(), "Неверное количество эпиков");
         assertEquals(epic, savedEpic.getFirst(), "Возвращает неверный эпик");
     }
 
+    @Override
     @Test
-    @DisplayName("Создание и получение подхадачи")
+    @DisplayName("Создание и получение подзадачи")
     void shouldCreateSubTask() {
         assertNotNull(subTask, "Подзадача не найдена");
 
-        SubTask getSubTask = taskManager.getSubTaskById(subTask.getId());
-        assertEquals(subTask, getSubTask, "Возвращет неверную подзадачу");
+        Optional getSubTask = taskManager.getSubTaskById(subTask.getId());
+        assertEquals(subTask, getSubTask.get(), "Возвращет неверную подзадачу");
 
         savedSubTask = taskManager.getSubTasks();
 
@@ -86,6 +75,7 @@ class InMemoryTaskManagerTest {
         assertEquals(subTask, savedSubTask.getFirst(), "Возвращает неверную подзадачу");
     }
 
+    @Override
     @Test
     @DisplayName("Удаление задачи")
     void shouldDeleteTask() {
@@ -96,8 +86,9 @@ class InMemoryTaskManagerTest {
         assertEquals(0, savedTask.size(), "Задача не удалена");
     }
 
+    @Override
     @Test
-    @DisplayName("Удалени эпика")
+    @DisplayName("Удаление эпика")
     void shouldDeleteEpic() {
         assertNotNull(epic, "Эпик не создан");
 
@@ -106,6 +97,7 @@ class InMemoryTaskManagerTest {
         assertEquals(0, savedEpic.size(), "Эпик не удалился");
     }
 
+    @Override
     @Test
     @DisplayName("Удаление подзадачи")
     void shouldDeleteSubTask() {
@@ -114,7 +106,7 @@ class InMemoryTaskManagerTest {
 
         savedSubTask = taskManager.getSubTaskFromEpic(epic.getId());
         assertEquals(0, savedSubTask.size(), "Подзадача не удаляется из списка");
-        assertNull(taskManager.getSubTaskById(subTask.getId()), "Подзадача не удалена");
+        assertEquals(taskManager.getSubTaskById(subTask.getId()), Optional.empty(), "Подзадача не удалена");
     }
 
     @Test
@@ -122,7 +114,8 @@ class InMemoryTaskManagerTest {
     void shouldUpdateTask() {
         assertNotNull(task, "Задача не создана");
 
-        Task task2 = new Task(task.getId(), "Новое имя", "Новое описание", TasksStatus.IN_PROGRESS);
+        Task task2 = new Task(task.getId(), "Новое имя", "Новое описание", TasksStatus.IN_PROGRESS,
+                Duration.ofMinutes(10), LocalDateTime.of(2024, 12, 11, 12, 0));
         Task task2Update = taskManager.updateTasks(task2);
 
         int id = task.getId();
@@ -159,8 +152,8 @@ class InMemoryTaskManagerTest {
         assertNotNull(epic, "Эпик не создан");
         assertNotNull(subTask, "Подзадача не создана");
 
-        SubTask newSubTask = new SubTask(subTask.getId(), "Новое имя", "Новое описание",
-                TasksStatus.IN_PROGRESS, subTask.getEpicId());
+        SubTask newSubTask = new SubTask(subTask.getId(), "Новое имя", "Новое описание", TasksStatus.IN_PROGRESS,
+                Duration.ofMinutes(10), LocalDateTime.of(2024, 12, 11, 12, 10), subTask.getEpicId());
         taskManager.updateSubTasks(newSubTask);
 
         int id = subTask.getId();
@@ -169,7 +162,7 @@ class InMemoryTaskManagerTest {
         assertNotEquals(subTask, newSubTask, "Поля подзадачи не обновились");
 
         savedSubTask = taskManager.getSubTaskFromEpic(epic.getId());
-        assertEquals(newSubTask, savedSubTask.getFirst(), "Подзадача не обновляется");
+        assertEquals(newSubTask, savedSubTask.getFirst(), "Подзадача не обновляется в мапе");
         assertEquals(1, savedSubTask.size(), "Старая подзадача не удаляется при обновлении");
     }
 
@@ -179,9 +172,63 @@ class InMemoryTaskManagerTest {
         assertEquals(epic.getStatus(), subTask.getStatus(), "Статус эпика и подзадачи не совпадает");
 
         SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
-                TasksStatus.IN_PROGRESS, subTask.getEpicId());
+                TasksStatus.IN_PROGRESS, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 5, 5,5, 5), subTask.getEpicId());
         taskManager.updateSubTasks(newSubTask);
         assertEquals(epic.getStatus(), newSubTask.getStatus(), "Статус эпика и подзадачи не совпадает");
+    }
+
+    @Test
+    @DisplayName("Статус эпика при статусе всех подзадач NEW")
+    void shouldEpicStatusNew() {
+        SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
+                TasksStatus.NEW, Duration.ofMinutes(15), LocalDateTime.of(2024, 5, 5,5, 5),
+                subTask.getEpicId());
+        taskManager.createSubtask(newSubTask);
+
+        assertEquals(epic.getStatus(), TasksStatus.NEW, "Возвращает неверный статус эпика");
+    }
+
+    @Test
+    @DisplayName("Статус эпика при статусе всех подзадач DONE")
+    void shouldEpicStatusDone() {
+        SubTask subTask1 = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи", TasksStatus.DONE,
+                Duration.ofMinutes(15), LocalDateTime.of(2024, 10, 10, 12, 0), epic.getId());
+        taskManager.updateSubTasks(subTask1);
+
+        SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
+                TasksStatus.DONE, Duration.ofMinutes(15), LocalDateTime.of(2024, 5, 5,5, 5),
+                subTask.getEpicId());
+        taskManager.createSubtask(newSubTask);
+
+        assertEquals(epic.getStatus(), TasksStatus.DONE, "Возвращает неверный статус эпика");
+    }
+
+    @Test
+    @DisplayName("Статус эпика при статусе подзадач DONE, NEW")
+    void shouldEpicStatusDoneNew() {
+        SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
+                TasksStatus.DONE, Duration.ofMinutes(15), LocalDateTime.of(2024, 5, 5,5, 5),
+                subTask.getEpicId());
+        taskManager.createSubtask(newSubTask);
+
+        assertEquals(epic.getStatus(), TasksStatus.IN_PROGRESS, "Возвращает неверный статус эпика");
+    }
+
+    @Test
+    @DisplayName("Статус эпика при статусе подзадач IN_PROGRESS")
+    void shouldEpicStatusInProgress() {
+        SubTask subTask1 = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
+                TasksStatus.IN_PROGRESS, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 10, 10, 12, 0), epic.getId());
+        taskManager.updateSubTasks(subTask1);
+
+        SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
+                TasksStatus.IN_PROGRESS, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 5, 5,5, 5), subTask.getEpicId());
+        taskManager.createSubtask(newSubTask);
+
+        assertEquals(epic.getStatus(), TasksStatus.IN_PROGRESS, "Возвращает неверный статус эпика");
     }
 
     @Test
@@ -275,5 +322,132 @@ class InMemoryTaskManagerTest {
 
         savedTask = taskManager.getTasks();
         assertEquals(task, savedTask.getFirst(), "Возвращает неверные поля задачи");
+    }
+
+    @Test
+    @DisplayName("Добавление времени выполнения в задачу")
+    void shouldAddDurationAndTimeInTask() {
+        Duration durationTask = task.getDurationTask();
+        LocalDateTime startTime = task.getStartTime();
+        LocalDateTime engTime = task.getEndTime();
+
+        assertNotNull(durationTask, "Не добавляет продолжительность в задачу");
+        assertNotNull(startTime, "Не добавляет время начала");
+        assertNotNull(engTime, "Не добавляет время окончания");
+    }
+
+    @Test
+    @DisplayName("Добавление времени выполнения в подзадачу")
+    void shouldAddDurationAndTimeInSubTask() {
+        Duration durationSubTask = subTask.getDurationTask();
+        LocalDateTime startTime = subTask.getStartTime();
+        LocalDateTime engTime = subTask.getEndTime();
+
+        assertNotNull(durationSubTask, "Не добавляет продолжительность в подзадачу");
+        assertNotNull(startTime, "Не добавляет время начала");
+        assertNotNull(engTime, "Не добавляет время окончания");
+    }
+
+    @Test
+    @DisplayName("Добавление времени выполнения в эпик")
+    void shouldAddDurationAndTimeInEpic() {
+        Duration durationEpic = epic.getDurationTask();
+        LocalDateTime startTime = epic.getStartTime();
+        LocalDateTime engTime = epic.getEndTimeEpic();
+
+        assertNotNull(durationEpic, "Не добавляет продолжительность в подзадачу");
+        assertNotNull(startTime, "Не добавляет время начала");
+        assertNotNull(engTime, "Не добавляет время окончания");
+    }
+
+    @Test
+    @DisplayName("Обновление времени выполнения эпика при добавлении подзадачи")
+    void shouldUpdateEpicTimeAddSubTask() {
+        SubTask subTask1 = new SubTask("Имя подзадачи 2", "Описание подзадачи 2",
+                TasksStatus.IN_PROGRESS, Duration.ofMinutes(10),
+                LocalDateTime.of(2024, 12, 12, 12, 0), epic.getId());
+        taskManager.createSubtask(subTask1);
+
+        Duration actuallyDuration = epic.getDurationTask();
+        LocalDateTime actuallyStartTime = epic.getStartTime();
+        LocalDateTime actuallyEndTime = epic.getEndTimeEpic();
+
+        Duration expectedDuration = Duration.ofMinutes(25);
+        LocalDateTime expectedStartTime = subTask.getStartTime();
+        LocalDateTime expectedEndTime = subTask1.getEndTime();
+
+        assertEquals(actuallyDuration, expectedDuration, "Сохраняет неверную продолжительность");
+        assertEquals(actuallyStartTime, expectedStartTime, "Сохраняет неверное время начала");
+        assertEquals(actuallyEndTime, expectedEndTime, "Сохраняет неверное время окончания");
+    }
+
+    @Test
+    @DisplayName("Обновление времени выполнения эпика при обновлении подзадачи")
+    void shouldUpdateEpicTimeUpdateSubTask() {
+        SubTask subTask1 = new SubTask(subTask.getId(), "Новое имя", "Новое описание",
+                TasksStatus.IN_PROGRESS, Duration.ofMinutes(10),
+                LocalDateTime.of(2024, 5, 5, 12, 0), subTask.getEpicId());
+        taskManager.updateSubTasks(subTask1);
+
+        Duration actuallyDuration = epic.getDurationTask();
+        LocalDateTime actuallyStartTime = epic.getStartTime();
+        LocalDateTime actuallyEndTime = epic.getEndTimeEpic();
+
+        Duration expectedDuration = subTask1.getDurationTask();
+        LocalDateTime expectedStartTime = subTask1.getStartTime();
+        LocalDateTime expectedEndTime = subTask1.getEndTime();
+
+        assertEquals(actuallyDuration, expectedDuration, "Сохраняет неверную продолжительность");
+        assertEquals(actuallyStartTime, expectedStartTime, "Сохраняет неверное время начала");
+        assertEquals(actuallyEndTime, expectedEndTime, "Сохраняет неверное время окончания");
+    }
+
+    @Test
+    @DisplayName("Обновление времени выполнения эпика при удалении задачи")
+    void shouldUpdateEpicTimeDeleteSubTask() {
+        SubTask subTask1 = new SubTask("Имя подзадачи 2", "Описание подзадачи 2",
+                TasksStatus.IN_PROGRESS, Duration.ofMinutes(10),
+                LocalDateTime.of(2024, 12, 12, 12, 0), epic.getId());
+        taskManager.createSubtask(subTask1);
+        taskManager.deleteSubTasks(subTask.getId());
+
+        Duration actuallyDuration = epic.getDurationTask();
+        LocalDateTime actuallyStartTime = epic.getStartTime();
+        LocalDateTime actuallyEndTime = epic.getEndTimeEpic();
+
+        Duration expectedDuration = subTask1.getDurationTask();
+        LocalDateTime expectedStartTime = subTask1.getStartTime();
+        LocalDateTime expectedEndTime = subTask1.getEndTime();
+
+        assertEquals(actuallyDuration, expectedDuration, "Сохраняет неверную продолжительность");
+        assertEquals(actuallyStartTime, expectedStartTime, "Сохраняет неверное время начала");
+        assertEquals(actuallyEndTime, expectedEndTime, "Сохраняет неверное время окончания");
+    }
+
+    @Test
+    @DisplayName("Проверка исключения пересечений по времени выполнения задач при полном совпадении времени")
+    void shouldThrowingExceptionIntersectionTask() {
+        Task task1 = new Task("Имя второй задачи", "Описание второй задачи", TasksStatus.NEW, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 10, 11, 12, 0));
+                assertThrows(InvalidTaskException.class, () -> taskManager.createTasks(task1),
+                        "Не выкидывает исключение при пересечении времени");
+    }
+
+    @Test
+    @DisplayName("Проверка исключения пересечений по времени выполнения задач при совпадении времени времени начала и конца")
+    void shouldThrowingExceptionIntersectionTaskStartTime() {
+        Task task1 = new Task("Имя второй задачи", "Описание второй задачи", TasksStatus.NEW, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 10, 11, 11, 50));
+        assertThrows(InvalidTaskException.class, () -> taskManager.createTasks(task1),
+                "Не выкидывает исключение при пересечении времени");
+    }
+
+    @Test
+    @DisplayName("Проверка исключения пересечений по времени выполнения задач при совпадении времени времени конца и начала")
+    void shouldThrowingExceptionIntersectionTaskEndTime() {
+        Task task1 = new Task("Имя второй задачи", "Описание второй задачи", TasksStatus.NEW, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 10, 11, 12, 14));
+        assertThrows(InvalidTaskException.class, () -> taskManager.createTasks(task1),
+                "Не выкидывает исключение при пересечении времени");
     }
 }

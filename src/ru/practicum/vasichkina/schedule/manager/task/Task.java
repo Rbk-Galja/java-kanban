@@ -1,5 +1,7 @@
 package ru.practicum.vasichkina.schedule.manager.task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -10,18 +12,29 @@ public class Task {
     private TasksStatus status;
     protected TaskType taskType = TaskType.TASK;
     protected Integer epicId;
+    protected Duration durationTask = Duration.ofMinutes(15);
 
-    public Task(Integer id, String name, String description, TasksStatus status) {
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
+
+    public Task(Integer id, String name, String description, TasksStatus status,
+                Duration durationTask, LocalDateTime startTime) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.durationTask = durationTask;
+        this.startTime = startTime;
+        this.endTime = startTime.plus(durationTask);
     }
 
     public Task(String name, String description, TasksStatus status) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.durationTask = Duration.ofMinutes(15);
+        this.startTime = LocalDateTime.now();
+        this.endTime = startTime.plus(durationTask);
     }
 
     public Task(String name, String description) {
@@ -41,6 +54,22 @@ public class Task {
         this.description = description;
         this.status = status;
         this.taskType = taskType;
+    }
+
+    public Task(String name, String description, TasksStatus status, Duration durationTask, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.durationTask = durationTask;
+        this.startTime = startTime;
+        this.endTime = startTime.plus(durationTask);
+    }
+
+    public Task(Integer id, String name, String description, TasksStatus status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -83,18 +112,28 @@ public class Task {
         return epicId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(name, task.name) &&
-                Objects.equals(description, task.description) && status == task.status;
+    public Duration getDurationTask() {
+        return durationTask;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, status);
+    public void setDuration(Duration durationTask) {
+        this.durationTask = durationTask;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
@@ -104,7 +143,26 @@ public class Task {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", durationTask=" + durationTask +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description,
+                task.description) && status == task.status && taskType == task.taskType
+                && Objects.equals(epicId, task.epicId) && Objects.equals(durationTask, task.durationTask)
+                && Objects.equals(startTime, task.startTime) && Objects.equals(endTime, task.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, status, taskType, epicId, durationTask, startTime, endTime);
     }
 
 }

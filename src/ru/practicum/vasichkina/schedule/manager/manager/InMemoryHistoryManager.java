@@ -68,7 +68,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         } else {
             node.prev.next = node.next;
             node.next.prev = node.prev;
-        }
+        } 
     }
 
     public static class Node {

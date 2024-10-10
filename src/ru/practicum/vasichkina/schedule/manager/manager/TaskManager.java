@@ -6,6 +6,7 @@ import ru.practicum.vasichkina.schedule.manager.task.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public interface TaskManager {
 
@@ -18,11 +19,11 @@ public interface TaskManager {
     List<Epic> getEpic();
 
     //получение задач/подзадач/эпиков по id
-    Task getTaskById(Integer taskId);
+    Optional<Task> getTaskById(Integer taskId);
 
-    Epic getEpicById(Integer epicId);
+    Optional<Epic> getEpicById(Integer epicId);
 
-    SubTask getSubTaskById(Integer subTasksId);
+    Optional<SubTask> getSubTaskById(Integer subTasksId);
 
     // получение списка подзадач заданного эпика
     ArrayList<SubTask> getSubTaskFromEpic(Integer epicId);
