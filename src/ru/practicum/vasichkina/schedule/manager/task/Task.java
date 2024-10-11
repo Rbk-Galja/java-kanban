@@ -2,6 +2,7 @@ package ru.practicum.vasichkina.schedule.manager.task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Task {
@@ -15,7 +16,7 @@ public class Task {
     protected Duration durationTask = Duration.ofMinutes(15);
 
     protected LocalDateTime startTime;
-    protected LocalDateTime endTime;
+   // protected LocalDateTime endTime;
 
     public Task(Integer id, String name, String description, TasksStatus status,
                 Duration durationTask, LocalDateTime startTime) {
@@ -25,7 +26,6 @@ public class Task {
         this.status = status;
         this.durationTask = durationTask;
         this.startTime = startTime;
-        this.endTime = startTime.plus(durationTask);
     }
 
     public Task(String name, String description, TasksStatus status) {
@@ -34,7 +34,6 @@ public class Task {
         this.status = status;
         this.durationTask = Duration.ofMinutes(15);
         this.startTime = LocalDateTime.now();
-        this.endTime = startTime.plus(durationTask);
     }
 
     public Task(String name, String description) {
@@ -62,7 +61,6 @@ public class Task {
         this.status = status;
         this.durationTask = durationTask;
         this.startTime = startTime;
-        this.endTime = startTime.plus(durationTask);
     }
 
     public Task(Integer id, String name, String description, TasksStatus status) {
@@ -129,11 +127,7 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+        return startTime.plus(durationTask);
     }
 
     @Override
@@ -145,7 +139,6 @@ public class Task {
                 ", status=" + status +
                 ", durationTask=" + durationTask +
                 ", startTime=" + startTime +
-                ", endTime=" + endTime +
                 '}';
     }
 
@@ -157,12 +150,12 @@ public class Task {
         return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description,
                 task.description) && status == task.status && taskType == task.taskType
                 && Objects.equals(epicId, task.epicId) && Objects.equals(durationTask, task.durationTask)
-                && Objects.equals(startTime, task.startTime) && Objects.equals(endTime, task.endTime);
+                && Objects.equals(startTime, task.startTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, status, taskType, epicId, durationTask, startTime, endTime);
+        return Objects.hash(id, name, description, status, taskType, epicId, durationTask, startTime);
     }
 
 }

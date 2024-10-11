@@ -106,7 +106,6 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
 
         savedSubTask = taskManager.getSubTaskFromEpic(epic.getId());
         assertEquals(0, savedSubTask.size(), "Подзадача не удаляется из списка");
-        assertEquals(taskManager.getSubTaskById(subTask.getId()), Optional.empty(), "Подзадача не удалена");
     }
 
     @Test

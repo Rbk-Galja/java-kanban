@@ -39,27 +39,21 @@ public class InMemoryTaskManager implements TaskManager {
     public Optional<Task> getTaskById(Integer taskId) {
         Task task = tasks.get(taskId);
         historyManager.addTask(task);
-        return tasks.values().stream()
-                .filter(task1 -> task1.equals(task))
-                .findFirst();
+        return Optional.of(task);
     }
 
     @Override
     public Optional<Epic> getEpicById(Integer epicId) {
         Epic epic = epics.get(epicId);
         historyManager.addTask(epic);
-        return epics.values().stream()
-                .filter(epic1 -> epic1.equals(epic))
-                .findFirst();
+        return Optional.of(epic);
     }
 
     @Override
     public Optional<SubTask> getSubTaskById(Integer subTasksId) {
         SubTask subTask = subTasks.get(subTasksId);
         historyManager.addTask(subTask);
-        return subTasks.values().stream()
-                .filter(subTask1 -> subTask1.equals(subTask))
-                .findFirst();
+        return Optional.of(subTask);
     }
 
     // получение списка подзадач заданного эпика

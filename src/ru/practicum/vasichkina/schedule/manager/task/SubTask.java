@@ -19,7 +19,6 @@ public class SubTask extends Task {
         super(name, description, status);
         this.durationTask = Duration.ofMinutes(15);
         this.startTime = LocalDateTime.now();
-        this.endTime = startTime.plus(durationTask);
         this.epicId = epicId;
     }
 
