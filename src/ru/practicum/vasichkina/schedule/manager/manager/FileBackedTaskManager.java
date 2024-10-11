@@ -77,8 +77,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         System.out.println();
 
-       // file.delete();
-       // dir.delete();
+        file.delete();
+        dir.delete();
     }
 
     public static FileBackedTaskManager loadFromFile() {
