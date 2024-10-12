@@ -1,13 +1,9 @@
 package ru.practicum.vasichkina.schedule.manager.manager;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.practicum.vasichkina.schedule.manager.task.Epic;
 import ru.practicum.vasichkina.schedule.manager.task.SubTask;
 import ru.practicum.vasichkina.schedule.manager.task.Task;
-import ru.practicum.vasichkina.schedule.manager.task.TasksStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,97 +11,150 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тесты менеджера сохранения истории задач")
-class InMemoryHistoryManagerTest {
+class InMemoryHistoryManagerTest extends TaskManagerTest {
 
-    private static TaskManager historyManager;
     List<Task> history = new ArrayList<>();
     List<Task> newHistory = new ArrayList<>();
-    private static Task task;
-    private static Epic epic;
-    private static SubTask subTask;
 
-    @BeforeEach
-    public void beforeEach() {
-        historyManager = Manager.getDefault();
-        epic = new Epic("Имя эпика", "Описание эпика");
-        historyManager.createEpic(epic);
-
-        subTask = new SubTask("Имя подзадачи", "Описание подзадачи", TasksStatus.NEW, epic.getId());
-        historyManager.createSubtask(subTask);
-
-        task = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW);
-        historyManager.createTasks(task);
+    @Override
+    protected InMemoryTaskManager createTaskManager() {
+        return new InMemoryTaskManager();
     }
 
     @Test
-    @DisplayName("Сохранение задачи в историю при создании")
-    void shouldSaveTaskInHistory() {
-        assertNotNull(task, "Задача не найдена");
-        historyManager.getTaskById(task.getId());
-
-        history = historyManager.getHistory();
-        assertEquals(1, history.size(), "Не сохраняет задачу в историю");
-        Task task1 = history.getFirst();
-        assertEquals(task, task1, "Возвращает неверную задачу из истории");
-
-        historyManager.deleteTask(task.getId());
-        newHistory = historyManager.getHistory();
-        assertTrue(newHistory.isEmpty(), "Не удаляет задачу из истории");
+    @DisplayName("Пустая история")
+    void emptyHistory() {
+        history = taskManager.getHistory();
+        assertEquals(0, history.size(), "Не возвращает пустую историю");
     }
 
     @Test
-    @DisplayName("Сохранение эпика в истории при создании")
-    void shouldSaveEpicInHistory() {
-        assertNotNull(epic, "Эпик не найден");
-        historyManager.getEpicById(epic.getId());
+    @DisplayName("Добавление дублей в историю")
+    void shouldNotDuplicatesInHistory() {
+        taskManager.getTaskById(task.getId());
+        taskManager.getSubTaskById(subTask.getId());
+        taskManager.getTaskById(task.getId());
+        history = taskManager.getHistory();
 
-        history = historyManager.getHistory();
-        assertEquals(1, history.size(), "Не сохраняет эпик в историю");
-
-        historyManager.deleteEpic(epic.getId());
-        newHistory = historyManager.getHistory();
-        assertTrue(newHistory.isEmpty(), "Не удаляет эпик из истории");
-    }
-
-    @Test
-    @DisplayName("Сохранение подзадачи в истории")
-    void shouldSaveSubTaskInHistory() {
-        assertNotNull(epic, "Эпик не найден");
-
-        assertNotNull(subTask, "Подзадача не найдена");
-        historyManager.getSubTaskById(subTask.getId());
-
-        history = historyManager.getHistory();
-        assertEquals(1, history.size(), "Неверное количество подзадач");
-        assertEquals(history.getFirst(), subTask, "Не сохраняет подзадачу в историю");
-
-        historyManager.deleteSubTasks(subTask.getId());
-        newHistory = historyManager.getHistory();
-        assertTrue(newHistory.isEmpty(), "Не удаляет подзадачу из истории");
+        assertEquals(2, history.size(), "Добавляет дубли в историю");
     }
 
     @Test
     @DisplayName("Добавление последней вызванной задачи в хвост")
     void shouldMoveViewedTaskTheTail() {
-        assertNotNull(epic, "Эпик не найден");
-        historyManager.getEpicById(epic.getId());
+        taskManager.getEpicById(epic.getId());
+        taskManager.getSubTaskFromEpic(epic.getId());
+        taskManager.getTaskById(task.getId());
 
-        assertNotNull(subTask, "Подзадача не найдена");
-        List<SubTask> subTasks = historyManager.getSubTasks();
-        assertEquals(subTasks.size(), 1, "Не сохраняет подзадачу");
-        historyManager.getSubTaskFromEpic(epic.getId());
-
-        assertNotNull(task, "Задача не найдена");
-        historyManager.getTaskById(task.getId());
-
-        history = historyManager.getHistory();
-        assertEquals(history.size(), 3, "Не сохраняет все задачи в историю");
+        history = taskManager.getHistory();
         assertEquals(history.get(2), task, "Не добавляет в хвост последнюю вызванную задачу");
 
-        historyManager.getEpicById(epic.getId());
-        newHistory = historyManager.getHistory();
+        taskManager.getEpicById(epic.getId());
+        newHistory = taskManager.getHistory();
         assertEquals(newHistory.size(), 3, "Не удаляет предыдущий вызов задачи в истории");
         assertEquals(newHistory.get(2), epic, "Не сохраняет в хвост последнюю вызванную задачу");
+    }
+
+    @Test
+    @DisplayName("Удаление из головы истории")
+    void shouldUpdateTailHistory() {
+        taskManager.getTaskById(task.getId());
+        taskManager.getSubTaskById(subTask.getId());
+        taskManager.getEpicById(epic.getId());
+
+        taskManager.deleteTask(task.getId());
+        history = taskManager.getHistory();
+        assertEquals(2, history.size(), "Не удаляет задачу из головы");
+    }
+
+    @Test
+    @DisplayName("Удаление из середины истории")
+    void shouldDeleteMiddleHistory() {
+        taskManager.getTaskById(task.getId());
+        taskManager.getSubTaskById(subTask.getId());
+        taskManager.getEpicById(epic.getId());
+
+        taskManager.deleteSubTasks(subTask.getId());
+        history = taskManager.getHistory();
+        assertEquals(2, history.size(), "Не удаляет задачу из середины");
+    }
+
+    @Test
+    @DisplayName("Удаление из хвоста истории")
+    void shouldDeleteTailHistory() {
+        taskManager.getTaskById(task.getId());
+        taskManager.getEpicById(epic.getId());
+        taskManager.getSubTaskById(subTask.getId());
+
+        taskManager.deleteSubTasks(subTask.getId());
+        history = taskManager.getHistory();
+        assertEquals(2, history.size(), "Не удаляет задачу из хвоста");
+    }
+
+    @Override
+    @Test
+    @DisplayName("Сохранение задачи в историю при создании")
+    void shouldCreateTask() {
+        assertNotNull(task, "Задача не найдена");
+        taskManager.getTaskById(task.getId());
+
+        history = taskManager.getHistory();
+        assertEquals(1, history.size(), "Не сохраняет задачу в историю");
+        Task task1 = history.getFirst();
+        assertEquals(task, task1, "Возвращает неверную задачу из истории");
+    }
+
+    @Override
+    @Test
+    @DisplayName("Сохранение эпика в истории при создании")
+    void shouldCreateEpic() {
+        assertNotNull(epic, "Эпик не найден");
+        taskManager.getEpicById(epic.getId());
+
+        history = taskManager.getHistory();
+        assertEquals(1, history.size(), "Не сохраняет эпик в историю");
+    }
+
+    @Override
+    @Test
+    @DisplayName("Сохранение подзадачи в истории")
+    void shouldCreateSubTask() {
+        assertNotNull(epic, "Эпик не найден");
+
+        assertNotNull(subTask, "Подзадача не найдена");
+        taskManager.getSubTaskById(subTask.getId());
+
+        history = taskManager.getHistory();
+        assertEquals(1, history.size(), "Неверное количество подзадач");
+        assertEquals(history.getFirst(), subTask, "Не сохраняет подзадачу в историю");
+    }
+
+    @Override
+    @Test
+    @DisplayName("Удаление задачи из истории")
+    void shouldDeleteTask() {
+        taskManager.getTasks();
+        taskManager.deleteTask(task.getId());
+        newHistory = taskManager.getHistory();
+        assertTrue(newHistory.isEmpty(), "Не удаляет задачу из истории");
+    }
+
+    @Override
+    @Test
+    @DisplayName("Удаление эпика из истории")
+    void shouldDeleteEpic() {
+        taskManager.deleteEpic(epic.getId());
+        newHistory = taskManager.getHistory();
+        assertTrue(newHistory.isEmpty(), "Не удаляет эпик из истории");
+    }
+
+    @Override
+    @Test
+    @DisplayName("Удаление подзадачи из истории")
+    void shouldDeleteSubTask() {
+        taskManager.deleteSubTasks(subTask.getId());
+        newHistory = taskManager.getHistory();
+        assertTrue(newHistory.isEmpty(), "Не удаляет подзадачу из истории");
     }
 
 }

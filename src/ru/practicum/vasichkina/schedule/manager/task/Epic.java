@@ -1,14 +1,16 @@
 package ru.practicum.vasichkina.schedule.manager.task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
 
+    private LocalDateTime endTimeEpic;
     protected TaskType taskType = TaskType.EPIC;
     private List<Integer> subTaskId = new ArrayList<>();
-
 
     public Epic(String name, String description) {
         super(name, description);
@@ -18,8 +20,8 @@ public class Epic extends Task {
         super(id, name, description);
     }
 
-    public Epic(Integer id, String name, String description, TasksStatus status) {
-        super(id, name, description, status);
+    public Epic(Integer id, String name, String description, TasksStatus status, Duration durationTask, LocalDateTime startTime) {
+        super(id, name, description, status, durationTask, startTime);
     }
 
     public List<Integer> getSubTaskId() {
@@ -30,33 +32,37 @@ public class Epic extends Task {
         this.subTaskId = addToEpic;
     }
 
+    public LocalDateTime getEndTimeEpic() {
+        return endTimeEpic;
+    }
+
+    public void setEndTimeEpic(LocalDateTime endTimeEpic) {
+        this.endTimeEpic = endTimeEpic;
+    }
+
     @Override
     public TaskType getTaskType() {
         return taskType;
     }
 
-
-    @Override
-    public String toString() {
-        return "Epic{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", status=" + getStatus() +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Epic epic)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(subTaskId, epic.subTaskId);
+        Epic epic = (Epic) o;
+        return Objects.equals(endTimeEpic, epic.endTimeEpic) && taskType == epic.taskType && Objects.equals(subTaskId, epic.subTaskId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), subTaskId);
+        return Objects.hash(super.hashCode(), endTimeEpic, taskType, subTaskId);
     }
 
+    @Override
+    public String toString() {
+        return "Epic{" +
+                "endTimeEpic=" + endTimeEpic +
+                "} " + super.toString();
+    }
 }

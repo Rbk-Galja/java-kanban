@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,36 +26,42 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) throws IOException {
+
         Files.createDirectories(dir.toPath());
         FileBackedTaskManager fileManager = new FileBackedTaskManager(file);
 
         System.out.println("Создаём задачи");
 
-        Task task = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW);
+        Task task = new Task("d", "f", TasksStatus.NEW, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 11, 7, 12, 10));
         fileManager.createTasks(task);
 
         Epic epic = new Epic("Имя эпика", "Описание эпика");
         fileManager.createEpic(epic);
 
-        SubTask subTask = new SubTask("Имя подзадачи", "Описание подзадачи", TasksStatus.NEW,
-                epic.getId());
+        SubTask subTask = new SubTask("Имя подзадачи 1", "Описание подзадачи 1", TasksStatus.NEW, epic.getId());
         fileManager.createSubtask(subTask);
 
-        SubTask subTask1 = new SubTask("Имя подзадачи2", "Описание подзадачи 2", TasksStatus.NEW,
-                epic.getId());
+        SubTask subTask1 = new SubTask("Имя подзадачи 2", "Описание подзадачи 2", TasksStatus.IN_PROGRESS,
+                Duration.ofMinutes(15), LocalDateTime.of(2024, 10, 8, 11, 20), epic.getId());
         fileManager.createSubtask(subTask1);
 
+        SubTask subTask2 = new SubTask("Имя подзадачи 3", "Описание подзадачи 3", TasksStatus.IN_PROGRESS,
+                Duration.ofMinutes(15), LocalDateTime.of(2024, 10, 9, 11, 11), epic.getId());
+        fileManager.createSubtask(subTask2);
+
+        Epic epic2 = new Epic("Имя эпика2", "Описание эпика2");
+        fileManager.createEpic(epic2);
+
+        SubTask subTask4 = new SubTask("Имя подзадачи 1 эпика 2", "Описание подзадачи 1 эпика 2", TasksStatus.IN_PROGRESS,
+                Duration.ofMinutes(15), LocalDateTime.of(2024, 10, 10, 11, 10), epic2.getId());
+        fileManager.createSubtask(subTask4);
+
+        SubTask subTask5 = new SubTask("Имя подзадачи 2 эпика 2", "Описание подзадачи 2 эпика 2", TasksStatus.NEW,
+                Duration.ofMinutes(15), LocalDateTime.of(2024, 10, 11, 11, 20), epic2.getId());
+        fileManager.createSubtask(subTask5);
+
         List<String> tasks;
-        tasks = Files.readAllLines(file.toPath());
-        System.out.println(tasks);
-        System.out.println();
-
-        System.out.println("Обновляем подзадачу");
-
-        SubTask subTask2 = new SubTask(subTask.getId(), "Имя новой подзадачи",
-                "Описание новой подзадачи", TasksStatus.IN_PROGRESS, subTask.getEpicId());
-        fileManager.updateSubTasks(subTask2);
-
         tasks = Files.readAllLines(file.toPath());
         System.out.println(tasks);
         System.out.println();
@@ -66,6 +74,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         List<Epic> epic1 = newFileManager.getEpic();
         List<SubTask> subTaskList = newFileManager.getSubTasks();
         System.out.println(task1 + "\n" + epic1 + "\n" + subTaskList);
+
+        System.out.println();
 
         file.delete();
         dir.delete();
