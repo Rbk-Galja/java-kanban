@@ -24,6 +24,7 @@ public class Main {
 
         Epic epic = new Epic("Имя эпика", "Описание эпика");
         inMemoryTaskManager.createEpic(epic);
+        System.out.println(epic);
 
         SubTask subTask = new SubTask("Имя подзадачи 1", "Описание подзадачи 1", TasksStatus.NEW,
                 Duration.ofMinutes(10), LocalDateTime.of(2024, 10, 7, 11, 11), epic.getId());

@@ -152,7 +152,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
         assertNotNull(subTask, "Подзадача не создана");
 
         SubTask newSubTask = new SubTask(subTask.getId(), "Новое имя", "Новое описание", TasksStatus.IN_PROGRESS,
-                Duration.ofMinutes(10), LocalDateTime.of(2024, 12, 11, 12, 10), subTask.getEpicId());
+                Duration.ofMinutes(10), LocalDateTime.of(2024, 12, 11, 12, 10), subTask.getIdEpicSB());
         taskManager.updateSubTasks(newSubTask);
 
         int id = subTask.getId();
@@ -172,7 +172,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
 
         SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
                 TasksStatus.IN_PROGRESS, Duration.ofMinutes(15),
-                LocalDateTime.of(2024, 5, 5,5, 5), subTask.getEpicId());
+                LocalDateTime.of(2024, 5, 5,5, 5), subTask.getIdEpicSB());
         taskManager.updateSubTasks(newSubTask);
         assertEquals(epic.getStatus(), newSubTask.getStatus(), "Статус эпика и подзадачи не совпадает");
     }
@@ -182,7 +182,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     void shouldEpicStatusNew() {
         SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
                 TasksStatus.NEW, Duration.ofMinutes(15), LocalDateTime.of(2024, 5, 5,5, 5),
-                subTask.getEpicId());
+                subTask.getIdEpicSB());
         taskManager.createSubtask(newSubTask);
 
         assertEquals(epic.getStatus(), TasksStatus.NEW, "Возвращает неверный статус эпика");
@@ -197,7 +197,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
 
         SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
                 TasksStatus.DONE, Duration.ofMinutes(15), LocalDateTime.of(2024, 5, 5,5, 5),
-                subTask.getEpicId());
+                subTask.getIdEpicSB());
         taskManager.createSubtask(newSubTask);
 
         assertEquals(epic.getStatus(), TasksStatus.DONE, "Возвращает неверный статус эпика");
@@ -208,7 +208,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     void shouldEpicStatusDoneNew() {
         SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
                 TasksStatus.DONE, Duration.ofMinutes(15), LocalDateTime.of(2024, 5, 5,5, 5),
-                subTask.getEpicId());
+                subTask.getIdEpicSB());
         taskManager.createSubtask(newSubTask);
 
         assertEquals(epic.getStatus(), TasksStatus.IN_PROGRESS, "Возвращает неверный статус эпика");
@@ -224,7 +224,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
 
         SubTask newSubTask = new SubTask(subTask.getId(), "Имя подзадачи", "Описание подзадачи",
                 TasksStatus.IN_PROGRESS, Duration.ofMinutes(15),
-                LocalDateTime.of(2024, 5, 5,5, 5), subTask.getEpicId());
+                LocalDateTime.of(2024, 5, 5,5, 5), subTask.getIdEpicSB());
         taskManager.createSubtask(newSubTask);
 
         assertEquals(epic.getStatus(), TasksStatus.IN_PROGRESS, "Возвращает неверный статус эпика");
@@ -385,7 +385,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     void shouldUpdateEpicTimeUpdateSubTask() {
         SubTask subTask1 = new SubTask(subTask.getId(), "Новое имя", "Новое описание",
                 TasksStatus.IN_PROGRESS, Duration.ofMinutes(10),
-                LocalDateTime.of(2024, 5, 5, 12, 0), subTask.getEpicId());
+                LocalDateTime.of(2024, 5, 5, 12, 0), subTask.getIdEpicSB());
         taskManager.updateSubTasks(subTask1);
 
         Duration actuallyDuration = epic.getDurationTask();
