@@ -15,14 +15,14 @@ public class CSVFormatter {
     public static String toString(Task task) {
         StringBuilder sb = new StringBuilder()
                 .append(task.getId()).append(",")
-                .append(task.getTaskType()).append(",")
+                .append(getTaskType(task)).append(",")
                 .append(task.getName()).append(",")
                 .append(task.getStatus()).append(",")
                 .append(task.getDescription()).append(",")
                 .append(task.getStartTime()).append(",")
                 .append(task.getDurationTask().toMinutes());
-        if (task.getTaskType().equals(TaskType.SUBTASK)) {
-            sb.append(",").append(task.getEpicId());
+        if (getTaskType(task).equals(TaskType.SUBTASK)) {
+            sb.append(",").append(task.getIdEpicSB());
         }
         return sb.toString();
     }
@@ -48,5 +48,14 @@ public class CSVFormatter {
 
     protected static String getHeader() {
         return "id,type,name,status,description,duration,startTime,epic";
+    }
+
+    private static TaskType getTaskType(Task task) {
+        if (task instanceof Epic) {
+            return TaskType.EPIC;
+        } else if (task instanceof SubTask) {
+            return TaskType.SUBTASK;
+        }
+        return TaskType.TASK;
     }
 }
