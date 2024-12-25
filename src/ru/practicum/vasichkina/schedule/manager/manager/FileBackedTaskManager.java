@@ -90,11 +90,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             for (int i = 1; i < lines.size(); i++) {
                 Task task = CSVFormatter.fromString(lines.get(i));
                 idTask.add(task.getId());
-                if (task instanceof Epic) {
+                if (task.getTaskType().equals(TaskType.EPIC)) {
                     fileBackedTaskManager.addEpic((Epic) task);
-                } else if (task instanceof SubTask) {
+                } else if (task.getTaskType().equals(TaskType.SUBTASK)) {
                     fileBackedTaskManager.addSubTask((SubTask) task);
-                } else {
+                } else if (task.getTaskType().equals(TaskType.TASK)) {
                     fileBackedTaskManager.addTask(task);
                 }
             }
@@ -136,7 +136,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void addSubTask(SubTask subTask) {
         subTasks.put(subTask.getId(), subTask);
-        Epic epic = epics.get(subTask.getIdEpicSB());
+        Epic epic = epics.get(subTask.getEpicId());
         epic.getSubTaskId().add(subTask.getId());
     }
 
