@@ -18,7 +18,7 @@ public class PrioritizedHttpHandler extends BaseHttpHandler {
         String requestMethod = exchange.getRequestMethod();
         if (requestMethod.equals("GET")) {
             try {
-                String response = HttpTaskServer.getGson().toJson(taskManager.getPrioritizedList());
+                String response = HttpTaskServer.getGson().toJson(taskManager.getPriorList());
                 sendText(exchange, response, 200);
             } catch (Exception e) {
                 sendError500(exchange);
