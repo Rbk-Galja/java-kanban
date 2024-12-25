@@ -97,7 +97,7 @@ public class EpicHttpHandler extends BaseHttpHandler {
             Epic epic = HttpTaskServer.getGson().fromJson(body, Epic.class);
             taskManager.createEpic(epic);
             sendText(exchange, "Эпик успешно создан", 201);
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             sendError404(exchange);
         } catch (Exception e) {
             sendError500(exchange);

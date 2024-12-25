@@ -1,4 +1,4 @@
-package HttpTest;
+package HttpTaskTest;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.practicum.vasichkina.schedule.manager.HTTP.HttpTaskServer;
-import ru.practicum.vasichkina.schedule.manager.exceptions.NotFoundException;
 import ru.practicum.vasichkina.schedule.manager.manager.TaskManager;
 import ru.practicum.vasichkina.schedule.manager.task.Epic;
 import ru.practicum.vasichkina.schedule.manager.task.SubTask;

@@ -87,7 +87,7 @@ public class TaskHttpHandler extends BaseHttpHandler {
             sendText(exchange, "Задача успешно создана", 201);
         } catch (InvalidTaskException e) {
             sendError406(exchange);
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             sendError404(exchange);
         } catch (Exception e) {
             sendError500(exchange);
@@ -112,7 +112,7 @@ public class TaskHttpHandler extends BaseHttpHandler {
             sendText(exchange, "Задача с id = " + id + " успешно обновлена", 201);
         } catch (InvalidTaskException e) {
             sendError406(exchange);
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             sendError404(exchange);
         } catch (Exception e) {
             sendError500(exchange);

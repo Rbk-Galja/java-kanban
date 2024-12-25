@@ -1,4 +1,4 @@
-package HttpTest;
+package HttpTaskTest;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -19,10 +19,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisplayName("Тесты POST, GET, DELETE для InMemoryHistoryManager")
-public class HttpHistoryTest extends BaseHttpTaskManagerTest {
+public class HttpPrioritizedTest extends BaseHttpTaskManagerTest {
 
     @Override
     protected TaskManager createTaskManager() {
@@ -31,14 +29,14 @@ public class HttpHistoryTest extends BaseHttpTaskManagerTest {
 
     @BeforeEach
     public void createURI() {
-        url = URI.create(uriSt + "/history");
+        url = URI.create(uriSt + "/prioritized");
     }
 
+    @Override
     @Test
-    @DisplayName("Добавление задачи в историю")
+    @DisplayName("Добавление задачи в список")
     void shouldCreateTask() throws Exception {
         taskManager.createTasks(task);
-        taskManager.getTaskById(task.getId());
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
@@ -55,15 +53,14 @@ public class HttpHistoryTest extends BaseHttpTaskManagerTest {
         assertEquals(tasks.size(), 1, "Неверное количество задач");
     }
 
+    @Override
     @Test
-    @DisplayName("Получение списка задач")
+    @DisplayName("Получение сортированного списка задач")
     void shouldGetAllTasks() throws Exception {
         taskManager.createTasks(task);
         Task task2 = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW, Duration.ofMinutes(15),
-                LocalDateTime.of(2025, 10, 11, 12, 0));
+                LocalDateTime.of(2024, 10, 11, 10, 0));
         taskManager.createTasks(task2);
-        taskManager.getTaskById(task.getId());
-        taskManager.getTaskById(task2.getId());
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
@@ -78,13 +75,17 @@ public class HttpHistoryTest extends BaseHttpTaskManagerTest {
         JsonElement jsonElement = JsonParser.parseString(response.body());
         tasks = gson.fromJson(jsonElement, listTypeToken.getType());
         assertEquals(tasks.size(), 2, "Неверное количество задач");
+        assertEquals(task2.getId(), tasks.getFirst().getId(), "Задачи не расставлены по приоритету");
     }
 
+    @Override
     @Test
-    @DisplayName("Удаление задачи из истории")
+    @DisplayName("Удаление задачи")
     void shouldDeleteTask() throws Exception {
         taskManager.createTasks(task);
-        taskManager.getTaskById(task.getId());
+        Task task2 = new Task("Имя задачи", "Описание задачи", TasksStatus.NEW, Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 10, 11, 10, 0));
+        taskManager.createTasks(task2);
         taskManager.deleteTask(task.getId());
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -99,6 +100,7 @@ public class HttpHistoryTest extends BaseHttpTaskManagerTest {
         };
         JsonElement jsonElement = JsonParser.parseString(response.body());
         tasks = gson.fromJson(jsonElement, listTypeToken.getType());
-        assertTrue(tasks.isEmpty(), "Неверное количество задач");
+        assertEquals(tasks.size(), 1, "Неверное количество задач");
     }
+
 }

@@ -1,4 +1,4 @@
-package HttpTest;
+package HttpTaskTest;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
