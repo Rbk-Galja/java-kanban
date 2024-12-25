@@ -303,7 +303,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getPriorList() {
+    public List<Task> getPrioritizedList() {
         return scheduleTask.stream().toList();
     }
 

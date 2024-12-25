@@ -51,7 +51,7 @@ public class Main {
         System.out.println(inMemoryTaskManager.getSubTaskFromEpic(epic2.getId()));
 
         System.out.println("Выводим список");
-        List<Task> schedule = inMemoryTaskManager.getPriorList();
+        List<Task> schedule = inMemoryTaskManager.getPrioritizedList();
         schedule.stream()
                 .peek(task -> System.out.println(task + "/n"))
                 .toList();
