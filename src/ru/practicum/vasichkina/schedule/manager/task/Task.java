@@ -6,15 +6,16 @@ import java.util.Objects;
 
 public class Task {
 
-    protected Integer id;
-    protected String name;
-    protected String description;
-    protected TasksStatus status;
-   // protected TaskType taskType = TaskType.TASK;
+    private Integer id;
+    private String name;
+    private String description;
+    private TasksStatus status;
+    protected TaskType taskType = TaskType.TASK;
     protected Integer epicId;
     protected Duration durationTask = Duration.ofMinutes(15);
 
     protected LocalDateTime startTime;
+   // protected LocalDateTime endTime;
 
     public Task(Integer id, String name, String description, TasksStatus status,
                 Duration durationTask, LocalDateTime startTime) {
@@ -45,13 +46,13 @@ public class Task {
         this.description = description;
     }
 
-   /* public Task(Integer id, String name, String description, TasksStatus status, TaskType taskType) {
+    public Task(Integer id, String name, String description, TasksStatus status, TaskType taskType) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
         this.taskType = taskType;
-    } */
+    }
 
     public Task(String name, String description, TasksStatus status, Duration durationTask, LocalDateTime startTime) {
         this.name = name;
@@ -100,11 +101,11 @@ public class Task {
         this.status = status;
     }
 
-   // public TaskType getTaskType() {
-   //     return taskType;
-   // }
+    public TaskType getTaskType() {
+        return taskType;
+    }
 
-    public Integer getIdEpicSB() {
+    public Integer getEpicId() {
         return epicId;
     }
 
@@ -140,17 +141,20 @@ public class Task {
                 '}';
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && Objects.equals(epicId, task.epicId) && Objects.equals(durationTask, task.durationTask) && Objects.equals(startTime, task.startTime);
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description,
+                task.description) && status == task.status && taskType == task.taskType
+                && Objects.equals(epicId, task.epicId) && Objects.equals(durationTask, task.durationTask)
+                && Objects.equals(startTime, task.startTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, status, epicId, durationTask, startTime);
+        return Objects.hash(id, name, description, status, taskType, epicId, durationTask, startTime);
     }
+
 }
