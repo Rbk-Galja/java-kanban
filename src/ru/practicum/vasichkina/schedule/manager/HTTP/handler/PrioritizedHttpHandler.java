@@ -9,15 +9,14 @@ import java.io.IOException;
 public class PrioritizedHttpHandler extends BaseHttpHandler {
 
     public PrioritizedHttpHandler(TaskManager taskManager) {
-
         super(taskManager);
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         System.out.println("Началась обработка запроса /prioritized от клиента");
-        String requestMethod = exchange.getRequestMethod();
-        if (requestMethod.equals("GET")) {
+        String method = exchange.getRequestMethod();
+        if (method.equals("GET")) {
             try {
                 String resp = HttpTaskServer.getGson().toJson(taskManager.getPrioritizedList());
                 sendText(exchange, resp, 200);
@@ -25,7 +24,7 @@ public class PrioritizedHttpHandler extends BaseHttpHandler {
                 sendError500(exchange);
             }
         } else {
-            System.out.println("Ждем метом GET, а получили " + requestMethod);
+            System.out.println("Ждали метод GET, а получили " + method);
         }
         exchange.close();
     }
