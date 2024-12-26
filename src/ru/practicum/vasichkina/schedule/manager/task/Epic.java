@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Epic extends Task {
 
     private LocalDateTime endTimeEpic;
-    protected TaskType taskType = TaskType.EPIC;
+   // protected TaskType taskType = TaskType.EPIC;
     private List<Integer> subTaskId = new ArrayList<>();
 
     public Epic(String name, String description) {
@@ -40,9 +40,12 @@ public class Epic extends Task {
         this.endTimeEpic = endTimeEpic;
     }
 
+
     @Override
-    public TaskType getTaskType() {
-        return taskType;
+    public String toString() {
+        return "Epic{" +
+                "endTimeEpic=" + endTimeEpic +
+                "} " + super.toString();
     }
 
     @Override
@@ -51,18 +54,11 @@ public class Epic extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
-        return Objects.equals(endTimeEpic, epic.endTimeEpic) && taskType == epic.taskType && Objects.equals(subTaskId, epic.subTaskId);
+        return Objects.equals(endTimeEpic, epic.endTimeEpic) && Objects.equals(subTaskId, epic.subTaskId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), endTimeEpic, taskType, subTaskId);
-    }
-
-    @Override
-    public String toString() {
-        return "Epic{" +
-                "endTimeEpic=" + endTimeEpic +
-                "} " + super.toString();
+        return Objects.hash(super.hashCode(), endTimeEpic, subTaskId);
     }
 }

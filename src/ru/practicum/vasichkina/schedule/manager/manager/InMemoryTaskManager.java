@@ -95,7 +95,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask createSubtask(SubTask subTask) {
-        Epic epic = epics.get(subTask.getEpicId());
+        Epic epic = epics.get(subTask.getEpicIdSB());
         if (epic == null || epic.getId().equals(subTask.getId())) {
             return null;
         }
@@ -124,7 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubTasks(SubTask subTask) {
         Integer subTaskId = subTask.getId();
-        Integer epicId = subTask.getEpicId();
+        Integer epicId = subTask.getEpicIdSB();
         scheduleTask.remove(subTasks.get(subTaskId));
         intersectionTaskTime(subTask);
         SubTask savedSubTask = subTasks.get(subTaskId);
@@ -163,7 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean deleteSubTasks(Integer id) {
         SubTask subTask = subTasks.get(id);
         boolean deleteSubTask = subTasks.remove(id) != null;
-        Epic epic = epics.get(subTask.getEpicId());
+        Epic epic = epics.get(subTask.getEpicIdSB());
         epic.getSubTaskId().remove(epic.getId());
         updateEpicStatus(epic.getId());
         scheduleTask.remove(subTask);
