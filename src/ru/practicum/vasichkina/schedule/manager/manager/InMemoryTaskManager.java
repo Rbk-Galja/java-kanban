@@ -95,7 +95,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask createSubtask(SubTask subTask) {
-        Epic epic = epics.get(subTask.getIdEpicSB());
+        Epic epic = epics.get(subTask.getEpicId());
         if (epic == null || epic.getId().equals(subTask.getId())) {
             return null;
         }
@@ -124,7 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubTasks(SubTask subTask) {
         Integer subTaskId = subTask.getId();
-        Integer epicId = subTask.getIdEpicSB();
+        Integer epicId = subTask.getEpicId();
         scheduleTask.remove(subTasks.get(subTaskId));
         intersectionTaskTime(subTask);
         SubTask savedSubTask = subTasks.get(subTaskId);
@@ -163,7 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean deleteSubTasks(Integer id) {
         SubTask subTask = subTasks.get(id);
         boolean deleteSubTask = subTasks.remove(id) != null;
-        Epic epic = epics.get(subTask.getIdEpicSB());
+        Epic epic = epics.get(subTask.getEpicId());
         epic.getSubTaskId().remove(epic.getId());
         updateEpicStatus(epic.getId());
         scheduleTask.remove(subTask);
@@ -302,7 +302,6 @@ public class InMemoryTaskManager implements TaskManager {
         scheduleTask.add(task1);
     }
 
-    @Override
     public List<Task> getPrioritizedList() {
         return scheduleTask.stream().toList();
     }
