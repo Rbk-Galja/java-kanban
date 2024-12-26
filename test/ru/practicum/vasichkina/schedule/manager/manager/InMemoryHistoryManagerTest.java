@@ -2,6 +2,7 @@ package ru.practicum.vasichkina.schedule.manager.manager;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.practicum.vasichkina.schedule.manager.task.SubTask;
 import ru.practicum.vasichkina.schedule.manager.task.Task;
 
 import java.util.ArrayList;
