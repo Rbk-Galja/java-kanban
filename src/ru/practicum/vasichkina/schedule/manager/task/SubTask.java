@@ -6,36 +6,39 @@ import java.util.Objects;
 
 public class SubTask extends Task {
 
-    private Integer epicId;
-    protected TaskType taskType = TaskType.SUBTASK;
+    protected Integer epicIdSB;
+    //protected TaskType taskType = TaskType.SUBTASK;
 
     public SubTask(Integer id, String name, String description, TasksStatus status,
-                   Duration durationTask, LocalDateTime startTime, Integer epicId) {
+                   Duration durationTask, LocalDateTime startTime, Integer epicIdSB) {
         super(id, name, description, status, durationTask, startTime);
-        this.epicId = epicId;
+        this.epicIdSB = epicIdSB;
     }
 
-    public SubTask(String name, String description, TasksStatus status, Integer epicId) {
+    public SubTask(String name, String description, TasksStatus status, Integer epicIdSB) {
         super(name, description, status);
         this.durationTask = Duration.ofMinutes(15);
         this.startTime = LocalDateTime.now();
-        this.epicId = epicId;
+        this.epicIdSB = epicIdSB;
     }
 
     public SubTask(String name, String description, TasksStatus status, Duration durationTask,
-                   LocalDateTime startTime, Integer epicId) {
+                   LocalDateTime startTime, Integer epicIdSB) {
         super(name, description, status, durationTask, startTime);
-        this.epicId = epicId;
+        this.epicIdSB = epicIdSB;
     }
 
     @Override
-    public Integer getEpicId() {
-        return epicId;
+    public Integer getEpicIdSB() {
+        return epicIdSB;
     }
 
+
     @Override
-    public TaskType getTaskType() {
-        return taskType;
+    public String toString() {
+        return "SubTask{" +
+                "epicIdSB=" + epicIdSB +
+                "} " + super.toString();
     }
 
     @Override
@@ -44,18 +47,11 @@ public class SubTask extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SubTask subTask = (SubTask) o;
-        return Objects.equals(epicId, subTask.epicId) && taskType == subTask.taskType;
+        return Objects.equals(epicIdSB, subTask.epicIdSB);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), epicId, taskType);
-    }
-
-    @Override
-    public String toString() {
-        return "SubTask{" +
-                "epicId=" + epicId +
-                "} " + super.toString();
+        return Objects.hash(super.hashCode(), epicIdSB);
     }
 }
